@@ -1,0 +1,14 @@
+Team Number: 03
+Team Name: Thrifters
+Team Members: Jake Borsheim, Emma Nickel, Devin Rocha, Josh Roy, Noah Tabori
+Application Name: Thrify3
+Application Description: 
+    An online thrift store designed for registered members who are CU students. When a user opens the site, it will direct them to a login page where they can either login to their existing account or click on a register button and be redirected to a register page. For each user, they will be considered a member of the site and will pay a monthly membership fee of $3 a month. 
+    Once logged in, the site's home page will be a catalog page where users can search through clothing items based on price, size, and other parameters. Users can add items to a cart and they will be able to access that cart and purchase those items.
+    Additionally, users will be able to sell their own pieces. We will have a page were users will list items that are on sale for other users. 
+Vision Statement: An accessible, affordable service for CU thrifters to find unique clothing pieces. 
+Version Control: https://github.com/jaborsh/Thrifty3
+Communication Plan: To communicate within the team, we will use a group chat over text and our discussion page on our group canvas page. Additionally, to communicate with our TA (Nikita), we will email her if there are any questions outside of lab or weekly meetings.
+Meeting Plan:
+- Team meeting: We will regularly meet on Mondays before our TA meeting at 4:00pm. As for additional meetings, we are planning to meet as needed and will communicate in our groupchat. 
+- Weekly Meeting with TA: Mondays at 5:30 pm on Zoom
