@@ -1,0 +1,4 @@
+04/10:
+- flushed out project idea
+- added some user stories to project board
+- created base for login and register pages and header/footer partials
