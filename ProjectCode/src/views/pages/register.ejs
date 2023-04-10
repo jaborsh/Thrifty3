@@ -1,0 +1,23 @@
+<%- include ('../partials/head') %>
+
+<main>
+  <div class="container">
+    <form action="/register" method="POST">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <input type="username" class="form-control" id="username" name="username" />
+            
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" />
+            
+        <button type="submit" class="btn btn-primary">Register</button>
+           
+        <p>To login to existing account:
+          <a class="nav-link" href = "../login">Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
