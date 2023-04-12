@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS item_category (
-  category_id SERIAL INT NOT NULL,
+  category_id SERIAL NOT NULL,
   name VARCHAR(255) NOT NULL,
   base_price DECIMAL(2),
   PRIMARY KEY (category_id)
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS item_category (
 -- Table preferences
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS preferences (
-  preference_ID SERIAL INT NOT NULL,
+  preference_ID SERIAL NOT NULL,
   major VARCHAR(45) NOT NULL,
   gender CHAR(1) NOT NULL,
   category_ID VARCHAR(45) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS preferences (
 -- Table users
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
-  user_ID SERIAL INT NOT NULL,
+  user_ID SERIAL NOT NULL,
   username VARCHAR(16) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(32) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Table item_images
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS item_images (
-  images_ID SERIAL INT NOT NULL,
+  images_ID SERIAL NOT NULL,
   url VARCHAR(255) NOT NULL,
   item_ID INT NOT NULL,
   PRIMARY KEY (images_ID),
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS item_images (
 -- Table items
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS items (
-  item_ID SERIAL INT NOT NULL,
+  item_ID SERIAL NOT NULL,
   name VARCHAR(255) NOT NULL,
   user_ID INT,
   category_ID INT NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS items (
 -- Table pickup_location
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS pickup_location (
-  location_id SERIAL INT NOT NULL,
+  location_id INT NOT NULL,
   building_name VARCHAR(45) NOT NULL,
   num_listings INT,
   PRIMARY KEY (location_id)
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS pickup_location (
 -- Table listings
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS listings (
-  listing_ID SERIAL INT NOT NULL,
+  listing_ID SERIAL NOT NULL,
   item_ID INT NOT NULL,
   price DECIMAL(2) NOT NULL,
   is_sale CHAR(1) NOT NULL DEFAULT 'N' CONSTRAINT is_sale CHECK (is_sale in ('Y','N')),
