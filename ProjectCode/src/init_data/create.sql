@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS preferences (
   preference_ID SERIAL NOT NULL,
   major VARCHAR(45) NOT NULL,
   gender CHAR(1) NOT NULL,
-  category_ID VARCHAR(45) NOT NULL,
+  category_ID INT NOT NULL,
   size VARCHAR(5),
   PRIMARY KEY (preference_ID),
   FOREIGN KEY (category_ID) REFERENCES item_category (category_ID)
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS users (
   size_preference VARCHAR(5),
   card_no CHAR(16) NOT NULL,
   member_since DATE NOT NULL DEFAULT CURRENT_DATE,
-  is_paid BINARY(1) NOT NULL CONSTRAINT is_paid CHECK (is_paid in ('Y','N')),
+  is_paid CHAR(1) NOT NULL CONSTRAINT is_paid CHECK (is_paid in ('Y','N')),
   preference_ID INT,
   PRIMARY KEY (user_ID),
   FOREIGN KEY (preference_ID) REFERENCES preferences (preference_ID)
