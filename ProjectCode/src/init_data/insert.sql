@@ -16,3 +16,12 @@ VALUES
 ("Jackets", 10.00),
 ("Shorts", 7.00),
 ("Backpacks", 10.50);
+
+INSERT INTO users 
+  (username,
+  email,
+  password,
+  card_no,
+  is_paid)
+VALUES
+('user','user@colorado.edu',pass,'1111111111111111','Y');
