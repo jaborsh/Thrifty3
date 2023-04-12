@@ -64,9 +64,11 @@ app.post("/login", async (req, res) => {
       {
           req.session.user = user;
           req.session.save();
+          res.json({status: 'success', message: "Logged in"});
     
           res.redirect("/home");
       } else {
+          res.json({status: 'fail', message: "Incorrect username or password"});
           throw new Error('Incorrect username or password');
       }
     })
@@ -77,6 +79,6 @@ app.post("/login", async (req, res) => {
 });
 
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000, () => {
+module.exports = app.listen(3000, () => {
     console.log('listening on port 3000');
   });
