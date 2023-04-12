@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS preferences (
   FOREIGN KEY (category_ID) REFERENCES item_category (category_ID)
 );
 
+
 -- -----------------------------------------------------
 -- Table users
 -- -----------------------------------------------------
