@@ -24,4 +24,4 @@ INSERT INTO users
   card_no,
   is_paid)
 VALUES
-('user','user@colorado.edu',pass,'1111111111111111','Y');
+('user','user@colorado.edu','pass','1111111111111111','Y');
