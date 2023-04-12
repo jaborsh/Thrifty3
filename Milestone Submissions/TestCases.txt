@@ -1,0 +1,17 @@
+Create 1 document per team, within the milestones folder in the project directory, that describes how, at least, 3 features within your finished product will be tested.
+The test plans should include specific test cases (user acceptance test cases) that describe the data and the user activity that will be executed in order to verify proper functionality of the feature.
+The test plans should include a description of the test data that will be used to test the feature.
+The test plans should include a description of the test environment that will be used to test the feature.
+The test plans should include a description of the test results that will be used to test the feature.
+The test plan should include information about the user acceptance testers.
+
+1. User Registration
+A user should be able to register themselves. When directed to the registration page, they will input a username, 
+password, email, first name, and last name. 
+Every field will be required. Once registered, they will be redirected to the login page.
+At the login page, they will input their username and password and will successfully login to a session. 
+By logging in, this will test that their information was saved into the user database.
+
+2. 
+
+3.
