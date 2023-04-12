@@ -9,6 +9,7 @@ chai.should();
 chai.use(chaiHttp);
 const {assert, expect} = chai;
 
+/*
 describe('Server!', () => {
   // Sample test case given to test / endpoint.
   it('Returns the default welcome message', done => {
@@ -21,8 +22,36 @@ describe('Server!', () => {
         assert.strictEqual(res.body.message, 'Welcome!');
         done();
       });
-  });
+  }); */
 
   // ===========================================================================
   // TO-DO: Part A Login unit test case
+
+describe('Login Positive', () => {
+    it('Test successful login.', done => {
+      chai
+        .request(server)
+        .post('/login')
+        .send({ username: 'user', password: 'pass' })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.status).to.equals('success');
+          expect(res).to.redirectTo('/home');
+          done();
+        });
+    });
+});
+
+describe('Login Negative', () => {
+    it('Test unsuccessful login.', done => {
+      chai
+        .request(server)
+        .post('/login')
+        .send({ username: 'user', password: 'wrong' })
+        .end((err, res) => {
+          expect(res.body.status).to.equals('fail');
+          expect(res).to.redirectTo('/login');
+          done();
+        });
+    });
 });

@@ -64,9 +64,11 @@ app.post("/login", async (req, res) => {
       {
           req.session.user = user;
           req.session.save();
+          res.json({status: 'success', message: "Logged in"});
     
           res.redirect("/home");
       } else {
+          res.json({status: 'fail', message: "Incorrect username or password"});
           throw new Error('Incorrect username or password');
       }
     })
