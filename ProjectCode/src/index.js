@@ -3,12 +3,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const pgp = require('pg-promise')();
+const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
+const bcrypt = require('bcrypt'); //  To hash passwords
 require('dotenv').config();
 
 // defining the Express app
 const app = express();
 // using bodyParser to parse JSON in the request body into JS objects
+app.set('view engine', 'ejs'); // set the view engine to EJS (So that pages can actually render)
 app.use(bodyParser.json());
+// /login route was not properly grabbing username from body. Below text fixes that
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 // Database connection details
 const dbConfig = {
   host: 'db',
@@ -24,8 +33,12 @@ app.get('/', (req, res) => {
   res.redirect('/login'); //redirect to /login endpoint
 });
 
+app.get('/home', (req, res) => {
+  res.render('pages/home') // Render home page
+});
+
 app.get('/register', (req, res) => {
-  res.render('pages/register');
+  res.render('pages/register')
 });
 
 // Register
@@ -34,8 +47,8 @@ app.post('/register', async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, 10);
 
   // To-DO: Insert username and hashed password into 'users' table
-  const query = 'insert into users (username, password, email, first_name, last_name) values ($1, $2, $3, $4, $5) returning *;';
-  db.any(query, [req.body.username, hash, req.body.email, req.body.first_name, req.body.last_name])
+  const query = 'insert into users (username, email, password, card_no, is_paid) values ($1, $2, $3, $4, $5) returning *;';
+  db.any(query, [req.body.username, req.body.email, hash, req.body.card_no, 'Y'])
   .then(function(data) {
       res.redirect('/login');
   })
@@ -45,31 +58,31 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('pages/login');
+  res.render('pages/login')
 });
 
 // Login submission
+/* ERROR ON LOGIN (using test_user): "TypeError: Cannot read properties of undefined (reading 'user')" */
 app.post("/login", async (req, res) => {
   const username = req.body.username;
-  // const password = req.body.password;
-  const query = "select * from users where users.username = $1";
+  console.log(req.body.username);
+  const query = "select * from users where username = $1";
   const values = [username];
 
   db.one(query, values)
-    .then((user) => {
+    .then(async (user) => {
       // check if password from request matches with password in DB
-      const match = bcrypt.compare(req.body.password, user.password);
-
+      const match = await bcrypt.compare(req.body.password, user.password);
       if(match)
       {
-          req.session.user = user;
+          req.session.user = user; // Bug here
           req.session.save();
           res.json({status: 'success', message: "Logged in"});
     
           res.redirect("/home");
       } else {
           res.json({status: 'fail', message: "Incorrect username or password"});
-          throw new Error('Incorrect username or password');
+          //throw new Error('Incorrect username or password');
       }
     })
     .catch((err) => {
@@ -77,6 +90,19 @@ app.post("/login", async (req, res) => {
       res.redirect("/login");
     });
 });
+
+/* Added Session Logic */
+// Authentication Middleware.
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    // Default to login page.
+    return res.redirect('/login');
+  }
+  next();
+};
+
+// Authentication Required
+app.use(auth);
 
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {
