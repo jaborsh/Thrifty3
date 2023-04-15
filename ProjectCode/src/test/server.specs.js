@@ -27,12 +27,19 @@ describe('Server!', () => {
   // ===========================================================================
   // TO-DO: Part A Login unit test case
 
+
+/*  With current login route, Login Positive test cases will FAIL
+    because 'user' row in DB does not have an encrypted password;
+    /login route decrypts password after querying, which 'pass' isn't encrypted,
+    so we will always get a 'fail' message
+    [const match = await bcrypt.compare(req.body.password, user.password);] <<
+*/
 describe('Login Positive', () => {
     it('Test successful login.', done => {
       chai
         .request(server)
         .post('/login')
-        .send({ username: 'user', password: 'pass' })
+        .send({ username: 'test_user', password: 'password' })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res.body.status).to.equals('success');

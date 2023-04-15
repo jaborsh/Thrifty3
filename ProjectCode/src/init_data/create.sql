@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS users (
   user_ID SERIAL,
   username VARCHAR(16) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  password VARCHAR(32) NOT NULL,
+  password VARCHAR(128) NOT NULL, -- Updated password length to account for hashed passes
   first_name VARCHAR(45),
   last_name VARCHAR(45),
   gender CHAR(1),
