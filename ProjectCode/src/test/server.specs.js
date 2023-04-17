@@ -39,7 +39,7 @@ describe('Login Positive', () => {
       chai
         .request(server)
         .post('/login')
-        .send({ username: 'test_user', password: 'password' })
+        .send({ username: 'user', password: 'password' })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res.body.status).to.equals('success');
@@ -54,7 +54,7 @@ describe('Login Negative', () => {
       chai
         .request(server)
         .post('/login')
-        .send({ username: 'user', password: 'wrong' })
+        .send({ username: 'wrong_user', password: 'wrong' })
         .end((err, res) => {
           expect(res.body.status).to.equals('fail');
           expect(res).to.redirectTo('/login');

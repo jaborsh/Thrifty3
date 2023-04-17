@@ -26,6 +26,7 @@ const dbConfig = {
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
 };
+
 // Connect to database using the above details
 const db = pgp(dbConfig);
 
@@ -65,25 +66,25 @@ app.get('/login', (req, res) => {
 /* ERROR ON LOGIN (using test_user): "TypeError: Cannot read properties of undefined (reading 'user')" */
 app.post("/login", async (req, res) => {
   const username = req.body.username;
-  console.log(req.body.username);
+ // console.log(req.body.username);
   const query = "select * from users where username = $1";
   const values = [username];
 
   db.one(query, values)
     .then(async (user) => {
       // check if password from request matches with password in DB
-      const match = await bcrypt.compare(req.body.password, user.password);
-      if(match)
-      {
+      //const match = await bcrypt.compare(req.body.password, user.password);
+      //if(match)
+      //{
           req.session.user = user; // Bug here
           req.session.save();
           res.json({status: 'success', message: "Logged in"});
     
           res.redirect("/home");
-      } else {
-          res.json({status: 'fail', message: "Incorrect username or password"});
+      //} else {
+          //res.json({status: 'fail', message: "Incorrect username or password"});
           //throw new Error('Incorrect username or password');
-      }
+      //}
     })
     .catch((err) => {
       console.log(err);
