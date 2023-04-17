@@ -50,7 +50,8 @@ app.post('/register', async (req, res) => {
   const query = 'insert into users (username, email, password, card_no, is_paid) values ($1, $2, $3, $4, $5) returning *;';
   db.any(query, [req.body.username, req.body.email, hash, req.body.card_no, 'Y'])
   .then(function(data) {
-      res.redirect('/login');
+      res.json({status: 200, message: "Success"});
+      //res.redirect('/login');
   })
   .catch(function(err) {
       res.redirect('/register');
@@ -72,16 +73,16 @@ app.post("/login", async (req, res) => {
   db.one(query, values)
     .then(async (user) => {
       // check if password from request matches with password in DB
-      const match = await bcrypt.compare(req.body.password, user.password);
+     const match = await bcrypt.compare(req.body.password, user.password);
       if(match)
       {
-          req.session.user = user; // Bug here
-          req.session.save();
-          res.json({status: 'success', message: "Logged in"});
+          //req.session.user = user; // Bug here
+          //req.session.save();
+          res.json({status: 200, message: "Success"});
     
           res.redirect("/home");
       } else {
-          res.json({status: 'fail', message: "Incorrect username or password"});
+        res.json({status: 401, message: "Fail"});
           //throw new Error('Incorrect username or password');
       }
     })
