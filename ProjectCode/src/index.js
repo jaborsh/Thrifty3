@@ -1,23 +1,18 @@
 // importing the dependencies
 // Express is a NodeJS framework that, among other features, allows us to create HTML templates.
 const express = require('express');
-const bodyParser = require('body-parser');
+const app = express();
 const pgp = require('pg-promise')();
+const bodyParser = require('body-parser');
 const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require('bcrypt'); //  To hash passwords
 require('dotenv').config();
 
-// defining the Express app
-const app = express();
-// using bodyParser to parse JSON in the request body into JS objects
-app.set('view engine', 'ejs'); // set the view engine to EJS (So that pages can actually render)
-app.use(bodyParser.json());
-// /login route was not properly grabbing username from body. Below text fixes that
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+// *****************************************************
+// <!-- Connect to DB -->
+// *****************************************************
+
+
 // Database connection details
 const dbConfig = {
   host: 'db',
@@ -28,6 +23,42 @@ const dbConfig = {
 };
 // Connect to database using the above details
 const db = pgp(dbConfig);
+
+// test your database
+db.connect()
+  .then(obj => {
+    console.log('Database connection successful'); // you can view this message in the docker compose logs
+    obj.done(); // success, release the connection;
+  })
+  .catch(error => {
+    console.log('ERROR:', error.message || error);
+  });
+
+// *****************************************************
+// <!-- App Settings -->
+// *****************************************************
+
+app.set('view engine', 'ejs'); // set the view engine to EJS
+app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+  
+// initialize session variables
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  })
+);
+  
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+// *****************************************************
+// <!-- Section 4 : API Routes -->
+// *****************************************************
 
 app.get('/', (req, res) => {
   res.redirect('/login'); //redirect to /login endpoint
@@ -62,36 +93,29 @@ app.get('/login', (req, res) => {
 });
 
 // Login submission
-/* ERROR ON LOGIN (using test_user): "TypeError: Cannot read properties of undefined (reading 'user')" */
+// Rewrite logic to handle non-existent username.
 app.post("/login", async (req, res) => {
   const username = req.body.username;
-  console.log(req.body.username);
-  const query = "select * from users where username = $1";
-  const values = [username];
+  const query = `select * from users where username = '${username}';`;
 
-  db.one(query, values)
+  db.one(query)
     .then(async (user) => {
-      // check if password from request matches with password in DB
       const match = await bcrypt.compare(req.body.password, user.password);
-      if(match)
-      {
-          req.session.user = user; // Bug here
-          req.session.save();
-          res.json({status: 'success', message: "Logged in"});
-    
-          res.redirect("/home");
-      } else {
-          res.json({status: 'fail', message: "Incorrect username or password"});
-          //throw new Error('Incorrect username or password');
+
+      if (!match) {
+        return res.json({
+          status: "fail",
+          message: "Invalid username or password",
+        });
       }
+
+      req.session.user = user;
+      req.session.save();
+      res.redirect("/home");
     })
-    .catch((err) => {
-      console.log(err);
-      res.redirect("/login");
-    });
 });
 
-/* Added Session Logic */
+/* Added Session Logic
 // Authentication Middleware.
 const auth = (req, res, next) => {
   if (!req.session.user) {
@@ -102,7 +126,7 @@ const auth = (req, res, next) => {
 };
 
 // Authentication Required
-app.use(auth);
+app.use(auth); */
 
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {

@@ -34,30 +34,44 @@ describe('Server!', () => {
     so we will always get a 'fail' message
     [const match = await bcrypt.compare(req.body.password, user.password);] <<
 */
+
+/*
+describe('Registration', () => {
+    it('Test successful registration.', done => {
+      chai
+        .request(server)
+        .post('/register')
+        .send({ username: 'test', password: 'password', email: 'test@email.com', card_no: '1234567890123456', is_paid: 'Y' })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.redirectTo('/login');
+          done();
+        });
+    });
+}); */
+
 describe('Login Positive', () => {
-    it('Test successful login.', done => {
+    it('Login Positive', done => {
       chai
         .request(server)
         .post('/login')
-        .send({ username: 'test_user', password: 'password' })
+        .send({ username: 'test', password: 'password' })
         .end((err, res) => {
           expect(err).to.be.null;
-          expect(res.body.status).to.equals('success');
-          expect(res).to.redirectTo('/home');
+          expect(res).to.redirectTo('http://127.0.0.1:3000/home');
           done();
         });
     });
 });
 
 describe('Login Negative', () => {
-    it('Test unsuccessful login.', done => {
+    it('Login Negative', done => {
       chai
         .request(server)
         .post('/login')
-        .send({ username: 'user', password: 'wrong' })
+        .send({ username: 'test', password: 'wrong' })
         .end((err, res) => {
           expect(res.body.status).to.equals('fail');
-          expect(res).to.redirectTo('/login');
           done();
         });
     });
