@@ -57,7 +57,7 @@ app.use(
 );
 
 // *****************************************************
-// <!-- Section 4 : API Routes -->
+// <!-- API Routes -->
 // *****************************************************
 
 app.get('/', (req, res) => {
@@ -113,6 +113,11 @@ app.post("/login", async (req, res) => {
       req.session.save();
       res.redirect("/home");
     })
+});
+
+// Catalog
+app.get('/catalog', (req, res) => {
+  res.render(`pages/catalog`)
 });
 
 // starting the server and keeping the connection open to listen for more requests
