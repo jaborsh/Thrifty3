@@ -45,8 +45,8 @@ app.use(bodyParser.json()); // specify the usage of JSON for parsing request bod
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    saveUninitialized: true,
-    resave: true,
+    saveUninitialized: false,
+    resave: false,
   })
 );
   
@@ -57,7 +57,7 @@ app.use(
 );
 
 // *****************************************************
-// <!-- Section 4 : API Routes -->
+// <!-- API Routes -->
 // *****************************************************
 
 // User JSON for user session
@@ -116,47 +116,55 @@ app.post("/login", async (req, res) => {
 
   db.one(query)
     .then(async (user) => {
-      // check if password from request matches with password in DB
       const match = await bcrypt.compare(req.body.password, user.password);
-      if(match)
-      {
-          // Update session user to queried user
-          curr_user.user_ID = user.user_id;
-          curr_user.username = user.username;
-          curr_user.email = user.email;
-          curr_user.first_name = user.first_name;
-          curr_user.last_name = user.last_name;
-          curr_user.gender = user.gender;
-          curr_user.major = user.major;
-          curr_user.size_preference = user.size_preference;
-          curr_user.card_no = user.card_no;
-          curr_user.member_since = user.member_since;
-          curr_user.is_paid = user.is_paid;
-          curr_user.preference_ID = user.preference_id;
-          
-          req.session.user = curr_user;
-          req.session.save();
-          //res.json({status: 200, message: "Success"});
-          console.log(curr_user);
-          console.log(req.session.user); 
-    
-          res.redirect("/home");
-      } else {
-        res.json({status: 401, message: "Fail"});
-          //throw new Error('Incorrect username or password');
-      }
-      
+
       if (!match) {
         return res.json({
           status: "fail",
           message: "Invalid username or password",
         });
       }
+      
+      // Update session user to queried user
+      curr_user.user_ID = user.user_id;
+      curr_user.username = user.username;
+      curr_user.email = user.email;
+      curr_user.first_name = user.first_name;
+      curr_user.last_name = user.last_name;
+      curr_user.gender = user.gender;
+      curr_user.major = user.major;
+      curr_user.size_preference = user.size_preference;
+      curr_user.card_no = user.card_no;
+      curr_user.member_since = user.member_since;
+      curr_user.is_paid = user.is_paid;
+      curr_user.preference_ID = user.preference_id;
+      
+      req.session.user = curr_user;
+      req.session.save();
+      res.redirect("/home");
     })
-    .catch((err) => {
-      console.log(err);
-      res.redirect("/login");
-    });
+});
+
+// Catalog
+app.get('/catalog', (req, res) => {
+  const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
+  FROM items
+  INNER JOIN item_category ON items.category_ID = item_category.category_ID;`;
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/catalog', {items: data});
+    })
+});
+
+app.get('/search', (req, res) => {
+  const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
+  FROM items
+  INNER JOIN item_category ON items.category_ID = item_category.category_ID
+  WHERE items.name ILIKE '%${req.query.query}%' OR item_category.name ILIKE '%${req.query.query}%';`;
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/catalog', {items: data});
+    })
 });
 // Donate
 app.get('/donate', (req, res) => {
@@ -233,7 +241,6 @@ app.post('/donate', async (req, res) => {
   });
 
 });
-
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {
     console.log('listening on port 3000');
