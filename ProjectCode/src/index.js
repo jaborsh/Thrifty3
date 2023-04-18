@@ -45,8 +45,8 @@ app.use(bodyParser.json()); // specify the usage of JSON for parsing request bod
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    saveUninitialized: false,
-    resave: false,
+    saveUninitialized: true,
+    resave: true,
   })
 );
   
@@ -59,6 +59,22 @@ app.use(
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
+
+// User JSON for user session
+const curr_user = {
+  user_ID: undefined,
+  username: undefined,
+  email: undefined,
+  first_name: undefined,
+  last_name: undefined,
+  gender: undefined,
+  major: undefined,
+  size_preference: undefined,
+  card_no: undefined,
+  member_since: undefined,
+  is_paid: undefined,
+  preference_ID: undefined
+};
 
 app.get('/', (req, res) => {
   res.redirect('/login'); //redirect to /login endpoint
@@ -100,19 +116,122 @@ app.post("/login", async (req, res) => {
 
   db.one(query)
     .then(async (user) => {
+      // check if password from request matches with password in DB
       const match = await bcrypt.compare(req.body.password, user.password);
-
+      if(match)
+      {
+          // Update session user to queried user
+          curr_user.user_ID = user.user_id;
+          curr_user.username = user.username;
+          curr_user.email = user.email;
+          curr_user.first_name = user.first_name;
+          curr_user.last_name = user.last_name;
+          curr_user.gender = user.gender;
+          curr_user.major = user.major;
+          curr_user.size_preference = user.size_preference;
+          curr_user.card_no = user.card_no;
+          curr_user.member_since = user.member_since;
+          curr_user.is_paid = user.is_paid;
+          curr_user.preference_ID = user.preference_id;
+          
+          req.session.user = curr_user;
+          req.session.save();
+          //res.json({status: 200, message: "Success"});
+          console.log(curr_user);
+          console.log(req.session.user); 
+    
+          res.redirect("/home");
+      } else {
+        res.json({status: 401, message: "Fail"});
+          //throw new Error('Incorrect username or password');
+      }
+      
       if (!match) {
         return res.json({
           status: "fail",
           message: "Invalid username or password",
         });
       }
-
-      req.session.user = user;
-      req.session.save();
-      res.redirect("/home");
     })
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/login");
+    });
+});
+// Donate
+app.get('/donate', (req, res) => {
+  // const user_listings_query = ' SELECT * FROM listings WHERE item_ID = \
+  //                                 (SELECT item_ID FROM items WHERE user_ID = $1)';
+  const user_listings_query = 
+    'SELECT * \
+    FROM listings \
+    LEFT JOIN items \
+    ON listings.item_ID = items.item_ID \
+    LEFT JOIN users \
+    ON items.user_ID = users.user_ID \
+    WHERE users.user_ID = $1;'
+  db.any(user_listings_query, [curr_user.user_ID])
+    .then((user_listings) => {
+      res.render('pages/donate', {
+        user_listings, // JSON for all current user's listings from query
+      });
+    })
+    .catch((err) => {
+      res.render("pages/donate", {
+        user_listings: [],
+        error: true,
+        message: err.message,
+      });
+    });
+});
+
+//Donate post (WIP)
+app.post('/donate', async (req, res) => {
+  const category_ID_query = 'SELECT * FROM item_category WHERE name = $1';
+  var listed_item; // Listed item information
+  var cat_ID; // Category information
+  var cat_price;
+  
+  db.any(category_ID_query, [req.body.category]) //translate dropdown category name to category_ID for insertion
+    .then(async (cat) => {
+      console.log(cat);
+      cat_ID = cat.category_ID; // get category id, base_price from query
+      cat_price = cat.base_price;
+    })
+    .catch(function(err) {
+      console.log(err);
+      cat_info = {category_ID: 1, base_price: 5.00}; //if category info not found, default to "Shirts", $5.00 (temporary)
+    });
+  
+  //Insert item into items table
+  const query_items = 'insert into items (name, user_ID, category_ID, color, size) values ($1, $2, $3, $4, $5) returning *;';
+  await db.any(query_items, [req.body.title, curr_user.user_ID, cat_ID, req.body.color, req.body.size])
+  .then(function(data) {
+      //res.json({status: 200, message: "Item Added"});
+      console.log(data);
+      listed_item = data.item_ID;
+      res.redirect('/donate');
+  })
+  .catch(function(err) {
+    console.log(err);
+    //res.json({status: 400, message: "Invalid listing. Make sure all required fields are valid."});
+    res.redirect('/donate');
+  });
+  
+  //TODO: Create new listing based on item details
+  const query_listings = 'insert into listings (item_ID, price, location_ID, description) values ($1, $2, $3, $4) returning *;';
+  await db.any(query_listings, [listed_item, cat_price, 1, req.body.desc])
+  .then(function(data) {
+      //res.json({status: 200, message: "Item Added"});
+      console.log(data);
+      res.redirect('/donate');
+  })
+  .catch(function(err) {
+    console.log(err);
+    //res.json({status: 400, message: "Invalid listing. Make sure all required fields are valid."});
+    res.redirect('/donate');
+  });
+
 });
 
 // starting the server and keeping the connection open to listen for more requests

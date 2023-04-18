@@ -1,0 +1,95 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+<%- include ('../partials/message') %>
+
+<main>
+    <div class="container"> <!-- User's listings container -->
+        <div class="card-header">
+            <b>My Listings</b>
+        </div>
+        <div class="card-group">
+            <%
+            var temp;
+            var listing_price;
+            user_listings.forEach(function(l) {
+                if(l.is_sale = 'Y') listing_price = `<h4 class="card-title" style="color:red">$${l.price} (Sale!)</h4>`;
+                else listing_price = `<h4 class="card-title">$${l.price}</h4>`;
+                
+                temp = `<div class="card"> \
+                            <img class="card-img-top" src="..." alt="Card image cap"> \
+                            <div class="card-body"> \
+                                <h5 class="card-title">${l.name}</h5> \
+                                ${listing_price} \
+                                <p class="card-text">${l.description}</p> \
+                                <p class="card-text"><small class="text-muted">Listed ${l.date_listed}</small></p> \
+                            </div> \
+                        </div>`;
+            %>
+                <%- temp %>
+            <% }); %>
+        </div>
+    </div>
+    <!-- Donate Form-->
+    <div class="container" style="padding-top: 5%;">
+        <div class="card-header">
+            <b>Donate</b>
+        </div>
+        <form action="/donate" method="POST">
+        <div class="mb-3">
+            <div class="form-group row">
+                <label for="title" class="col-sm-2 col-form-label">Listing title:</label>
+                <div class="col-sm-10">    
+                    <input type="text" class="form-control" id="title" name="title" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <label for="category" class="col-sm-2 col-form-label">Type:</label>
+                    <select class="custom-select mr-sm-2" id="category" name="category">
+                        <option selected>Choose Type...</option>
+                        <option value="Shirts">Shirts</option>
+                        <option value="Pants">Pants</option>
+                        <option value="Hats">Hats</option>
+                        <option value="Hoodies">Hoodies</option>
+                        <option value="Hats">Hats</option>
+                        <option value="Jackets">Jackets</option>
+                        <option value="Shorts">Shorts</option>
+                        <option value="Backpacks">Backpacks</option>
+                    </select>
+                </div>
+                <div class="col-sm-10">
+                    <label for="size" class="col-sm-2 col-form-label">Size:</label>
+                    <select class="custom-select mr-sm-2" id="size" name="size">
+                        <option selected>Choose Size...</option>
+                        <option value="XS/K">XS/K</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                        <option value="XXXL">XXXL</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="color" class="col-sm-2 col-form-label">Color:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="color" name="color" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="desc" class="col-sm-2 col-form-label">Tell us about this item...</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="desc" name="desc" />
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Pledge</button>
+            
+        </div>
+        </form>
+    </div>
+</main>
+<%- include ('../partials/footer') %>
