@@ -126,6 +126,17 @@ app.get('/catalog', (req, res) => {
     })
 });
 
+app.get('/search', (req, res) => {
+  const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
+  FROM items
+  INNER JOIN item_category ON items.category_ID = item_category.category_ID
+  WHERE items.name ILIKE '%${req.query.query}%' OR item_category.name ILIKE '%${req.query.query}%';`;
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/catalog', {items: data});
+    })
+});
+
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {
     console.log('listening on port 3000');
