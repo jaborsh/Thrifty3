@@ -2,22 +2,36 @@
 <%- include ('../partials/header') %>
 
 <main class="container">
-  <h1>Thrifty3 Catalog</h1>
+  <h1 style="text-align:center;">Thrifty3 Catalog</h1>
 
-  <div id="items" class="row">
-    <h2 class="col-12">Items for Sale</h2>
-    <% items.forEach(function(item) { %>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h3 class="card-title"><%= item.name %></h3>
-            <p class="card-text"><strong>Category:</strong> <%= item.category %></p>
-            <p class="card-text"><strong>Price:</strong> $<%= item.base_price %></p>
+  <div class="row mb-4">
+    <div class="form-group">
+      <form class="d-flex" action="/search" method="GET">
+        <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+  
+  <% if (items.length === 0) { %>
+    <p>No items found.</p>
+  <% } else { %>
+    <div id="items" class="row">
+      <h2 class="col-12">Items for Sale</h2>
+      <% items.forEach(function(item) { %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title"><%= item.name %></h3>
+              <p class="card-text"><strong>Category:</strong> <%= item.category %></p>
+              <p class="card-text"><strong>Price:</strong> $<%= item.base_price %></p>
+            </div>
           </div>
         </div>
-      </div>
-    <% }); %>
-  </div>
+      <% }); %>
+    </div>
+  <% } %>
 
 </main>
 
