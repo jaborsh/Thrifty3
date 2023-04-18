@@ -117,7 +117,13 @@ app.post("/login", async (req, res) => {
 
 // Catalog
 app.get('/catalog', (req, res) => {
-  res.render(`pages/catalog`)
+  const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
+  FROM items
+  INNER JOIN item_category ON items.category_ID = item_category.category_ID;`;
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/catalog', {items: data});
+    })
 });
 
 // starting the server and keeping the connection open to listen for more requests
