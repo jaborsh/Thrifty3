@@ -57,7 +57,7 @@ app.use(
 );
 
 // *****************************************************
-// <!-- Section 4 : API Routes -->
+// <!-- API Routes -->
 // *****************************************************
 
 app.get('/', (req, res) => {
@@ -112,6 +112,17 @@ app.post("/login", async (req, res) => {
       req.session.user = user;
       req.session.save();
       res.redirect("/home");
+    })
+});
+
+// Catalog
+app.get('/catalog', (req, res) => {
+  const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
+  FROM items
+  INNER JOIN item_category ON items.category_ID = item_category.category_ID;`;
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/catalog', {items: data});
     })
 });
 
