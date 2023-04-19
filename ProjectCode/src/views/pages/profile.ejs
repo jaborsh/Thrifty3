@@ -1,0 +1,14 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+
+<main class="container">
+    <h1 style="text-align:center;"><%=curr_user.first_name %> <%=curr_user.last_name %></h1>
+
+    <p>Username: <%=curr_user.username %></p>
+    <p>Email: <%=curr_user.email %></p>
+    <p>Major: <%=curr_user.major %></p>
+    <p>Gender: <%=curr_user.gender %></p>
+    <p>Preferred Size: <%=curr_user.size_preference %></p>
+</main>
+
+<%- include ('../partials/footer') %>
