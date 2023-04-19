@@ -90,8 +90,8 @@ app.post('/register', async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, 10);
 
   // To-DO: Insert username and hashed password into 'users' table
-  const query = 'insert into users (username, email, password, card_no, is_paid) values ($1, $2, $3, $4, $5) returning *;';
-  db.any(query, [req.body.username, req.body.email, hash, req.body.card_no, 'Y'])
+  const query = 'insert into users (username, email, password, first_name, last_name, card_no, is_paid) values ($1, $2, $3, $4, $5, $6, $7) returning *;';
+  db.any(query, [req.body.username, req.body.email, hash, req.body.first_name, req.body.last_name, req.body.card_no, 'Y'])
   .then(function(data) {
       res.redirect('/login');
   })
@@ -146,6 +146,11 @@ app.post("/login", async (req, res) => {
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/login', {user: null});
+});
+
+// Profile
+app.get('/profile', (req, res) => {
+  res.render('pages/profile', {curr_user: curr_user});
 });
 
 // Catalog
@@ -227,25 +232,25 @@ app.post('/donate', async (req, res) => {
   var cat_ID; // Category information
   var cat_price;
   
-  db.any(category_ID_query, [req.body.category]) //translate dropdown category name to category_ID for insertion
-    .then(async (cat) => {
+  await db.any(category_ID_query, [req.body.category]) //translate dropdown category name to category_ID for insertion
+    .then(cat => {
       console.log(cat);
-      cat_ID = cat.category_ID; // get category id, base_price from query
-      cat_price = cat.base_price;
+      cat_ID = cat[0].category_id; // get category id, base_price from query
+      cat_price = cat[0].base_price;
     })
     .catch(function(err) {
       console.log(err);
-      cat_info = {category_ID: 1, base_price: 5.00}; //if category info not found, default to "Shirts", $5.00 (temporary)
+      cat_info = {category_id: 1, base_price: 5.00}; //if category info not found, default to "Shirts", $5.00 (temporary)
     });
   
   //Insert item into items table
+  console.log("=====cat_id", cat_ID);
   const query_items = 'insert into items (name, user_ID, category_ID, color, size) values ($1, $2, $3, $4, $5) returning *;';
   await db.any(query_items, [req.body.title, curr_user.user_ID, cat_ID, req.body.color, req.body.size])
   .then(function(data) {
       //res.json({status: 200, message: "Item Added"});
       console.log(data);
-      listed_item = data.item_ID;
-      res.redirect('/donate');
+      listed_item = data[0].item_id;
   })
   .catch(function(err) {
     console.log(err);
