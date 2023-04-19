@@ -12,6 +12,15 @@ Every field will be required. Once registered, they will be redirected to the lo
 At the login page, they will input their username and password and will successfully login to a session. 
 By logging in, this will test that their information was saved into the user database.
 
-2. 
+To test this, we will first act as the user acceptance testers. Inputting random data to register different users and then logging in. 
+After our team tests, there should be no bugs and we will user our peers to test the registration feature. By using testers outside of the team, we can ensure it works for all general users who are not used to our design.
 
-3.
+2. Browse Feature
+When on the catalog page, a user should be able to browse for clothing using different parameters (size, price, category).
+We will ask users (our peers) to try to search for different parameters, starting with a single parameter to inputting multiple parameters. 
+The catalog page should then display items that fit within these parameters. 
+
+3. Saving an item to cart 
+When browsing on the catalog page, users should be able to save items to their cart. 
+It should be an easy straightforward process in which each individual item page will have a button that saves the item to cart.
+Then, users should open their cart to see the all items they saved.
