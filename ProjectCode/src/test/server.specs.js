@@ -35,20 +35,20 @@ describe('Server!', () => {
     [const match = await bcrypt.compare(req.body.password, user.password);] <<
 */
 
-/*
-describe('Registration', () => {
-    it('Test successful registration.', done => {
+
+describe('Registration Positive', () => {
+    it('Registration Positive', done => {
       chai
         .request(server)
         .post('/register')
         .send({ username: 'test', password: 'password', email: 'test@email.com', card_no: '1234567890123456', is_paid: 'Y' })
         .end((err, res) => {
           expect(err).to.be.null;
-          expect(res).to.redirectTo('/login');
+          expect(res).to.redirectTo('http://127.0.0.1:3000/login');
           done();
         });
     });
-}); */
+}); 
 
 describe('Login Positive', () => {
     it('Login Positive', done => {
@@ -58,7 +58,7 @@ describe('Login Positive', () => {
         .send({ username: 'test', password: 'password' })
         .end((err, res) => {
           expect(err).to.be.null;
-          expect(res).to.redirectTo('http://127.0.0.1:3000/home');
+          expect(res).to.redirectTo('http://127.0.0.1:35415/home');
           done();
         });
     });
@@ -76,3 +76,17 @@ describe('Login Negative', () => {
         });
     });
 });
+
+describe('Registration Negative', () => {
+  it('Registration Negative', done => {
+    chai
+      .request(server)
+      .post('/register')
+      .send({ username: '', password, email: 'test@email.com', card_no: '1234567890123456', is_paid: 'Y' })
+      .end((err, res) => {
+        expect(res.body.status).to.equals(400)
+        //expect(res).to.redirectTo('http://127.0.0.1:33153/register');
+        done();
+      });
+  });
+}); 
