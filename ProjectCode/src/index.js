@@ -94,8 +94,8 @@ app.post('/register', async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, 10);
 
   // To-DO: Insert username and hashed password into 'users' table
-  const query = 'insert into users (username, email, password, card_no, is_paid) values ($1, $2, $3, $4, $5) returning *;';
-  db.any(query, [req.body.username, req.body.email, hash, req.body.card_no, 'Y'])
+  const query = 'insert into users (username, email, password, first_name, last_name, card_no, is_paid) values ($1, $2, $3, $4, $5, $6, $7) returning *;';
+  db.any(query, [req.body.username, req.body.email, hash, req.body.first_name, req.body.last_name, req.body.card_no, 'Y'])
   .then(function(data) {
       res.redirect('/login');
   })
@@ -144,6 +144,11 @@ app.post("/login", async (req, res) => {
       req.session.save();
       res.redirect("/home");
     })
+});
+
+// Profile
+app.get('/profile', (req, res) => {
+  res.render('pages/profile', {curr_user: curr_user})
 });
 
 // Catalog
