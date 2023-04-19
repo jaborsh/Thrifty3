@@ -100,7 +100,8 @@ app.post('/register', async (req, res) => {
       res.redirect('/login');
   })
   .catch(function(err) {
-      res.redirect('/register');
+    res.json({status: 400, message: "Invalid"});
+    res.redirect('/register');
   });
 });
 
