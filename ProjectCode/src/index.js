@@ -142,6 +142,12 @@ app.post("/login", async (req, res) => {
     })
 });
 
+// Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/login', {user: null});
+});
+
 // Catalog
 app.get('/catalog', (req, res) => {
   const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price

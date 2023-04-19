@@ -78,7 +78,7 @@
                   1. Display "Login" if not logged in.  
                   2. Display "Profile", "Listings", and "Logout" if logged in.
                 -->
-                <% if (user.user_ID) { %>
+                <% if (user && user.user_ID) { %>
                   <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                     <a class="dropdown-item" href="/profile">Profile</a>
                     <a class="dropdown-item" href="#">Listings</a>
