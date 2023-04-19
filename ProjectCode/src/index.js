@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.render('pages/register')
+  res.render('pages/register', {user: curr_user})
 });
 
 // Register
@@ -102,7 +102,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('pages/login')
+  res.render('pages/login', {user: curr_user})
 });
 
 // Login submission
@@ -135,16 +135,22 @@ app.post("/login", async (req, res) => {
       curr_user.member_since = user.member_since;
       curr_user.is_paid = user.is_paid;
       curr_user.preference_ID = user.preference_id;
-      
+
       req.session.user = curr_user;
       req.session.save();
       res.redirect("/catalog");
     })
 });
 
+// Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/login', {user: null});
+});
+
 // Profile
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {curr_user: curr_user})
+  res.render('pages/profile', {curr_user: curr_user});
 });
 
 // Catalog
@@ -154,7 +160,7 @@ app.get('/catalog', (req, res) => {
   INNER JOIN item_category ON items.category_ID = item_category.category_ID;`;
   db.any(query)
     .then(function(data) {
-      res.render('pages/catalog', {items: data});
+      res.render('pages/catalog', {user: curr_user, items: data});
     })
 });
 
@@ -165,7 +171,7 @@ app.get('/search', (req, res) => {
   WHERE items.name ILIKE '%${req.query.query}%' OR item_category.name ILIKE '%${req.query.query}%';`;
   db.any(query)
     .then(function(data) {
-      res.render('pages/catalog', {items: data});
+      res.render('pages/catalog', {user: curr_user, items: data});
     })
 });
 
@@ -186,7 +192,7 @@ app.get('/filter', (req, res) => {
 
   db.any(query)
     .then(function(data) {
-      res.render('pages/catalog', {items: data});
+      res.render('pages/catalog', {user: curr_user, items: data});
     })
 });
 
@@ -205,11 +211,13 @@ app.get('/donate', (req, res) => {
   db.any(user_listings_query, [curr_user.user_ID])
     .then((user_listings) => {
       res.render('pages/donate', {
+        user: curr_user,
         user_listings, // JSON for all current user's listings from query
       });
     })
     .catch((err) => {
       res.render("pages/donate", {
+        user: curr_user,
         user_listings: [],
         error: true,
         message: err.message,
