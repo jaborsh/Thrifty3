@@ -167,6 +167,28 @@ app.get('/search', (req, res) => {
       res.render('pages/catalog', {items: data});
     })
 });
+
+app.get('/filter', (req, res) => {
+  /* Create query to filter by category:
+   - If category is 'all', then return all items
+   - Else, return items with category = category
+   - If query is empty, then return all items */
+
+  if (req.query.category === 'all') {
+    res.redirect('/catalog');
+  }
+
+  const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
+  FROM items
+  INNER JOIN item_category ON items.category_ID = item_category.category_ID
+  WHERE item_category.name = '${req.query.category}';`;
+
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/catalog', {items: data});
+    })
+});
+
 // Donate
 app.get('/donate', (req, res) => {
   // const user_listings_query = ' SELECT * FROM listings WHERE item_ID = \

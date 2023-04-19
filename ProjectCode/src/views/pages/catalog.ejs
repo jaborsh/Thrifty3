@@ -13,6 +13,24 @@
     </div>
   </div>
 
+  <!-- Filter option to only display items that associate with selected filter. None by default -->
+  <div class="row mb-4">
+    <div class="form-group">
+      <form class="d-flex" action="/filter" method="GET">
+        <select class="form-control me-2" name="category" aria-label="Filter">
+          <option value="all">All</option>
+          <option value="Shirts">Shirts</option>
+          <option value="Pants">Pants</option>
+          <option value="Hats">Hats</option>
+          <option value="Hoodies">Hoodies</option>
+          <option value="Jackets">Jackets</option>
+          <option value="Shorts">Shorts</option>
+          <option value="Backpacks">Backpacks</option>
+        </select>
+        <button class="btn btn-outline-success" type="submit">Filter</button>
+      </form>
+    </div>
+
   
   <% if (items.length === 0) { %>
     <p>No items found.</p>
