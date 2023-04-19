@@ -11,12 +11,29 @@
           aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- Logo -->
+        <ul class="navbar-nav me-auto">
+          <a class="navbar-brand" href="/catalog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="236" height="75" viewBox="0 0 236 100">
+              <defs>
+                <style>
+                  .cls-1 {
+                    stroke: #fff;
+                    stroke-linejoin: round;
+                    stroke-opacity: 0.5;
+                    stroke-width: 1px;
+                    font-size: 83.333px;
+                    fill: #2b2529;
+                    text-anchor: middle;
+                    font-family: "French Script MT";
+                  }
+                </style>
+              </defs>
+              <text id="Thrifty_3" data-name="Thrifty 3" class="cls-1" transform="translate(116.547 65.331) scale(0.987)"><tspan x="0">Thrifty 3</tspan></text>
+            </svg>
+          </a>
+        </ul>
         <div class="collapse navbar-collapse" id="navbar-collapse">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/home">Home</a>
-            </li>
-          </ul>
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <a class="nav-link" href="/catalog">Catalog</a>
@@ -26,28 +43,6 @@
             <li class="nav-item">
               <a class="nav-link" href="/donate">Donate</a>
             </li>
-          </ul>
-          <!-- Logo -->
-          <ul class="navbar-nav me-auto">
-            <a class="navbar-brand" href="/home">
-              <svg xmlns="http://www.w3.org/2000/svg" width="236" height="75" viewBox="0 0 236 100">
-                <defs>
-                  <style>
-                    .cls-1 {
-                      stroke: #fff;
-                      stroke-linejoin: round;
-                      stroke-opacity: 0.5;
-                      stroke-width: 1px;
-                      font-size: 83.333px;
-                      fill: #2b2529;
-                      text-anchor: middle;
-                      font-family: "French Script MT";
-                    }
-                  </style>
-                </defs>
-                <text id="Thrifty_3" data-name="Thrifty 3" class="cls-1" transform="translate(116.547 65.331) scale(0.987)"><tspan x="0">Thrifty 3</tspan></text>
-              </svg>
-            </a>
           </ul>
           <!-- Locations -->
           <ul class="navbar-nav me-auto">
@@ -76,7 +71,7 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                   <a class="dropdown-item" href="/profile">View Profile</a>
-                  <a class="dropdown-item" href="#">View listings</a>
+                  <a class="dropdown-item" href="/donate">View listings</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="/logout">Logout</a>
                 </ul>
