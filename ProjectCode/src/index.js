@@ -150,7 +150,14 @@ app.get('/logout', (req, res) => {
 
 // Profile
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {curr_user: curr_user});
+  const query = `SELECT items.name AS name, item_images.url AS url
+  FROM items
+  INNER JOIN item_images ON items.item_ID = item_images.item_ID
+  WHERE items.user_ID = $1;`;
+  db.any(query, [curr_user.user_ID])
+    .then(function(data) {
+      res.render('pages/profile', {user: curr_user, items: data});
+    })
 });
 
 // Catalog
