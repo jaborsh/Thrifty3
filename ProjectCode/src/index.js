@@ -80,10 +80,6 @@ app.get('/', (req, res) => {
   res.redirect('/login'); //redirect to /login endpoint
 });
 
-app.get('/home', (req, res) => {
-  res.render('pages/home') // Render home page
-});
-
 app.get('/register', (req, res) => {
   res.render('pages/register')
 });
@@ -142,7 +138,7 @@ app.post("/login", async (req, res) => {
       
       req.session.user = curr_user;
       req.session.save();
-      res.redirect("/home");
+      res.redirect("/catalog");
     })
 });
 
