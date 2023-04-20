@@ -2,13 +2,31 @@
 <%- include ('../partials/header') %>
 
 <main class="container">
-    <h1 style="text-align:center;"><%=curr_user.first_name %> <%=curr_user.last_name %></h1>
+    <h1 style="text-align:center;"><%=user.first_name %> <%=user.last_name %></h1>
 
-    <p>Username: <%=curr_user.username %></p>
-    <p>Email: <%=curr_user.email %></p>
-    <p>Major: <%=curr_user.major %></p>
-    <p>Gender: <%=curr_user.gender %></p>
-    <p>Preferred Size: <%=curr_user.size_preference %></p>
+    <p>Username: <%=user.username %></p>
+    <p>Email: <%=user.email %></p>
+    <p>Major: <%=user.major %></p>
+    <p>Gender: <%=user.gender %></p>
+    <p>Preferred Size: <%=user.size_preference %></p>
+
+    <% if (items.length === 0) { %>
+        <p>No listings.</p>
+      <% } else { %>
+        <div id="items" class="row">
+          <h2 class="col-12">Current Listings</h2>
+          <% items.forEach(function(item) { %>
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3 class="card-title"><%= item.name %></h3>
+                  <img src="<%= item.url %>">
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
 </main>
 
 <%- include ('../partials/footer') %>
