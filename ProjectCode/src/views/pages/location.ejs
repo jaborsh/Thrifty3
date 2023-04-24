@@ -1,0 +1,28 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+
+<main class="container">
+    <h1 style="text-align:center;">Pickup Sites</h1>
+    
+
+    <% if (pickup_locations.length === 0) { %>
+        <p>No locations available D:</p>
+    <% } else { %>
+    <div id="location" class="row">
+        <h2 class="col-12">Available Locations:</h2>
+        <% pickup_locations.forEach(function(pickup_location) { %>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title"><%= pickup_location.building_name %></h3>
+                <p class="card-text"><strong>Area:</strong> Main Campus </p>
+                <p class="card-text"><strong>Current Listings:</strong> $<%= pickup_location.num_listings %></p>
+            </div>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+    <% } %>
+</main>
+
+<%- include ('../partials/footer') %>

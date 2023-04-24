@@ -1,4 +1,4 @@
-INSERT INTO pickup_location (building_name, num_listings)
+INSERT INTO pickup_locations (building_name, num_listings)
 VALUES 
 ('UMC', 0), 
 ('Engineering Center', 0),

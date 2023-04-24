@@ -264,6 +264,17 @@ app.post('/donate', async (req, res) => {
   });
 
 });
+
+app.get('/locations', (req, res) => {
+  const query = `SELECT * FROM pickup_locations
+  INNER JOIN listings ON pickup_locations.location_ID = listings.location_ID;`;
+  db.any(query)
+    .then(function(data) {
+      res.render('pages/location', {pickup_locations: data});
+    })
+});
+
+
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {
     console.log('listening on port 3000');
