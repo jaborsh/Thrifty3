@@ -10,6 +10,10 @@
     <p>Gender: <%=user.gender %></p>
     <p>Preferred Size: <%=user.size_preference %></p>
 
+    <p>To edit account information:
+      <a class="nav-link" href = "../popup" style="color: blue"><u>Click Here</u></a>
+    </p>
+
     <% if (items.length === 0) { %>
         <p>No listings.</p>
       <% } else { %>
@@ -27,6 +31,7 @@
           <% }); %>
         </div>
       <% } %>
+
 </main>
 
 <%- include ('../partials/footer') %>

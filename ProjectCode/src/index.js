@@ -116,10 +116,8 @@ app.post("/login", async (req, res) => {
       const match = await bcrypt.compare(req.body.password, user.password);
 
       if (!match) {
-        return res.json({
-          status: "fail",
-          message: "Invalid username or password",
-        });
+        res.json({status: 400, message: "Invalid username or password"});
+        res.redirect('/login');
       }
       
       // Update session user to queried user
@@ -140,6 +138,10 @@ app.post("/login", async (req, res) => {
       req.session.save();
       res.redirect("/catalog");
     })
+    .catch(function(err) {
+      res.json({status: 400, message: "Invalid"});
+      res.redirect('/login');
+    });
 });
 
 // Logout
@@ -158,6 +160,23 @@ app.get('/profile', (req, res) => {
     .then(function(data) {
       res.render('pages/profile', {user: curr_user, items: data});
     })
+});
+
+app.get('/popup', (req, res) => {
+  res.render('pages/popup', {user: curr_user})
+});
+
+// Edit account info on profile page
+app.post('/popup', async (req, res) => {
+  const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4';
+  db.any(query, [req.body.major, req.body.gender, curr_user.user_ID])
+  .then(function(data) {
+      res.redirect('/profile');
+  })
+  .catch(function(err) {
+    res.json({status: 400, message: "Invalid"});
+    res.redirect('/profile');
+  });
 });
 
 // Catalog
