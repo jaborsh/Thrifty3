@@ -11,12 +11,29 @@
           aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- Logo -->
+        <ul class="navbar-nav me-auto">
+          <a class="navbar-brand" href="/catalog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="236" height="75" viewBox="0 0 236 100">
+              <defs>
+                <style>
+                  .cls-1 {
+                    stroke: #fff;
+                    stroke-linejoin: round;
+                    stroke-opacity: 0.5;
+                    stroke-width: 1px;
+                    font-size: 83.333px;
+                    fill: #2b2529;
+                    text-anchor: middle;
+                    font-family: "French Script MT";
+                  }
+                </style>
+              </defs>
+              <text id="Thrifty_3" data-name="Thrifty 3" class="cls-1" transform="translate(116.547 65.331) scale(0.987)"><tspan x="0">Thrifty 3</tspan></text>
+            </svg>
+          </a>
+        </ul>
         <div class="collapse navbar-collapse" id="navbar-collapse">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/home">Home</a>
-            </li>
-          </ul>
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <a class="nav-link" href="/catalog">Catalog</a>
@@ -26,28 +43,6 @@
             <li class="nav-item">
               <a class="nav-link" href="/donate">Donate</a>
             </li>
-          </ul>
-          <!-- Logo -->
-          <ul class="navbar-nav me-auto">
-            <a class="navbar-brand" href="/home">
-              <svg xmlns="http://www.w3.org/2000/svg" width="236" height="75" viewBox="0 0 236 100">
-                <defs>
-                  <style>
-                    .cls-1 {
-                      stroke: #f60707;
-                      stroke-linejoin: round;
-                      stroke-opacity: 0.5;
-                      stroke-width: 1px;
-                      font-size: 83.333px;
-                      fill: #2b2529;
-                      text-anchor: middle;
-                      font-family: "French Script MT";
-                    }
-                  </style>
-                </defs>
-                <text id="Thrifty_3" data-name="Thrifty 3" class="cls-1" transform="translate(116.547 65.331) scale(0.987)"><tspan x="0">Thrifty 3</tspan></text>
-              </svg>
-            </a>
           </ul>
           <!-- Locations -->
           <ul class="navbar-nav me-auto">
@@ -74,12 +69,20 @@
                     <image x="8" y="3" width="84" height="94" xlink:href="data:img/png;base64,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"/>
                   </svg> 
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                  <a class="dropdown-item" href="/profile">View Profile</a>
-                  <a class="dropdown-item" href="#">View listings</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/logout">Logout</a>
-                </ul>
+
+                <% if (user && user.user_ID) { %>
+                  <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item" href="/profile">Profile</a>
+                    <a class="dropdown-item" href="/donate">Listings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                  </ul>
+                <% } else { %>
+                  <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                    <a class="dropdown-item" href="/login">Login</a>
+                    <a class="dropdown-item" href="/register">Register</a>
+                  </ul>
+                <% } %>
               </div>
             </li>
           </ul>

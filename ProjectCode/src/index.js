@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.render('pages/register')
+  res.render('pages/register', {user: curr_user})
 });
 
 // Register
@@ -102,7 +102,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('pages/login')
+  res.render('pages/login', {user: curr_user})
 });
 
 // Login submission
@@ -135,16 +135,29 @@ app.post("/login", async (req, res) => {
       curr_user.member_since = user.member_since;
       curr_user.is_paid = user.is_paid;
       curr_user.preference_ID = user.preference_id;
-      
+
       req.session.user = curr_user;
       req.session.save();
       res.redirect("/catalog");
     })
 });
 
+// Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/login', {user: null});
+});
+
 // Profile
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {curr_user: curr_user})
+  const query = `SELECT items.name AS name, item_images.url AS url
+  FROM items
+  INNER JOIN item_images ON items.item_ID = item_images.item_ID
+  WHERE items.user_ID = $1;`;
+  db.any(query, [curr_user.user_ID])
+    .then(function(data) {
+      res.render('pages/profile', {user: curr_user, items: data});
+    })
 });
 
 // Catalog
@@ -154,7 +167,7 @@ app.get('/catalog', (req, res) => {
   INNER JOIN item_category ON items.category_ID = item_category.category_ID;`;
   db.any(query)
     .then(function(data) {
-      res.render('pages/catalog', {items: data});
+      res.render('pages/catalog', {user: curr_user, items: data});
     })
 });
 
@@ -165,7 +178,7 @@ app.get('/search', (req, res) => {
   WHERE items.name ILIKE '%${req.query.query}%' OR item_category.name ILIKE '%${req.query.query}%';`;
   db.any(query)
     .then(function(data) {
-      res.render('pages/catalog', {items: data});
+      res.render('pages/catalog', {user: curr_user, items: data});
     })
 });
 
@@ -186,7 +199,7 @@ app.get('/filter', (req, res) => {
 
   db.any(query)
     .then(function(data) {
-      res.render('pages/catalog', {items: data});
+      res.render('pages/catalog', {user: curr_user, items: data});
     })
 });
 
@@ -205,11 +218,13 @@ app.get('/donate', (req, res) => {
   db.any(user_listings_query, [curr_user.user_ID])
     .then((user_listings) => {
       res.render('pages/donate', {
+        user: curr_user,
         user_listings, // JSON for all current user's listings from query
       });
     })
     .catch((err) => {
       res.render("pages/donate", {
+        user: curr_user,
         user_listings: [],
         error: true,
         message: err.message,
@@ -224,25 +239,25 @@ app.post('/donate', async (req, res) => {
   var cat_ID; // Category information
   var cat_price;
   
-  db.any(category_ID_query, [req.body.category]) //translate dropdown category name to category_ID for insertion
-    .then(async (cat) => {
+  await db.any(category_ID_query, [req.body.category]) //translate dropdown category name to category_ID for insertion
+    .then(cat => {
       console.log(cat);
-      cat_ID = cat.category_ID; // get category id, base_price from query
-      cat_price = cat.base_price;
+      cat_ID = cat[0].category_id; // get category id, base_price from query
+      cat_price = cat[0].base_price;
     })
     .catch(function(err) {
       console.log(err);
-      cat_info = {category_ID: 1, base_price: 5.00}; //if category info not found, default to "Shirts", $5.00 (temporary)
+      cat_info = {category_id: 1, base_price: 5.00}; //if category info not found, default to "Shirts", $5.00 (temporary)
     });
   
   //Insert item into items table
+  console.log("=====cat_id", cat_ID);
   const query_items = 'insert into items (name, user_ID, category_ID, color, size) values ($1, $2, $3, $4, $5) returning *;';
   await db.any(query_items, [req.body.title, curr_user.user_ID, cat_ID, req.body.color, req.body.size])
   .then(function(data) {
       //res.json({status: 200, message: "Item Added"});
       console.log(data);
-      listed_item = data.item_ID;
-      res.redirect('/donate');
+      listed_item = data[0].item_id;
   })
   .catch(function(err) {
     console.log(err);
