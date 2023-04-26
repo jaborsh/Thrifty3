@@ -73,7 +73,8 @@ const curr_user = {
   card_no: undefined,
   member_since: undefined,
   is_paid: undefined,
-  preference_ID: undefined
+  preference_ID: undefined,
+  cart: []
 };
 
 app.get('/', (req, res) => {
@@ -116,7 +117,7 @@ app.post("/login", async (req, res) => {
       const match = await bcrypt.compare(req.body.password, user.password);
 
       if (!match) {
-        return res.json({
+        res.json({
           status: "fail",
           message: "Invalid username or password",
         });
@@ -296,8 +297,58 @@ app.post('/donate', async (req, res) => {
 
 });
 
-
-
+app.get('/listings/:id', (req, res) => {
+  
+  const l_query = 
+    'SELECT * \
+    FROM listings \
+    LEFT JOIN items \
+    ON listings.item_ID = items.item_ID \
+    LEFT JOIN pickup_location \
+    ON listings.location_ID = pickup_location.location_ID \
+    WHERE items.item_id = $1;';
+  const cat_query = 
+    'SELECT item_category.name AS name, base_price \
+    FROM item_category \
+    LEFT JOIN items \
+    ON items.category_ID = item_category.category_ID \
+    WHERE items.item_ID = $1;';
+  // TO DO: Implement images (db.any)
+  // const img_query = 
+  //   'SELECT * from item_images \
+  //     WHERE item_ID = $1;';
+  const test_image = new Array(
+    {url: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/true-classic-tees-lead-1656346905.jpg'},
+    {url: 'https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/6849354/2022/2/9/cc41bfc1-55f8-47df-a705-d5a05b286a871644388786288-Roadster-Men-Blue--Beige-Regular-Fit-Checked-Casual-Shirt-88-1.jpg'},
+    {url: 'https://cdn.shopify.com/s/files/1/1414/2498/products/ClassicShirt_FrenchBlue8_1024x1024.jpg?v=1667207840'}
+    ); //test
+  var images;
+  var cat;
+  
+  db.one(cat_query, [req.params.id])
+    .then((c) => {
+      cat = c;
+    });
+  
+  db.one(l_query, [req.params.id])
+    .then((l) => {
+      res.render('pages/listings', {
+        user: curr_user,
+        listing: l, // JSON for all cols in query
+        images: test_image,
+        cat //JSON for category info
+      });
+    })
+});
+app.post('/listings/:id', async (req, res) => {
+  const query = 'SELECT * FROM listings WHERE listing_ID = $1';
+  db.one(query, [req.params.id])
+    .then((i) => {
+      curr_user.cart.push(i);
+      console.log(curr_user);
+      res.redirect(`/listings/${i.item_id}`);
+    });
+});
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {
     console.log('listening on port 3000');
