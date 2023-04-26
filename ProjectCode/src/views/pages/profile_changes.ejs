@@ -1,0 +1,49 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+
+<main>
+    <div class="container" style="padding-top: 5%;">
+        <div class="card-header">
+            <b>Change Account Information:</b>
+        </div>
+    <form id="changes_form" method="POST" action="/profile_changes">
+        <div class="mb-3">
+            <div class="form-group row">
+                <label for="major" class="col-sm-2 col-form-label">Major:</label>
+                <div class="col-sm-10">    
+                    <input type="text" class="form-control" id="major" name="major" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <label for="gender" class="col-sm-2 col-form-label">Gender:</label>
+                    <select class="custom-select mr-sm-2" id="gender" name="gender">
+                        <option selected>Choose Gender...</option>
+                        <option value="Woman">Woman</option>
+                        <option value="Man">Man</option>
+                        <option value="Non-binary">Non-binary</option>
+                        <option value="noanswer">Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="col-sm-10">
+                    <label for="size" class="col-sm-2 col-form-label">Preferred Size:</label>
+                    <select class="custom-select mr-sm-2" id="size" name="size">
+                        <option selected>Choose Size...</option>
+                        <option value="XS/K">XS/K</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                        <option value="XXXL">XXXL</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" value="Submit" class="btn btn-primary">Make Changes</button>
+            
+        </div>
+        </form>
+    </div>
+</main>
+<%- include ('../partials/footer') %>

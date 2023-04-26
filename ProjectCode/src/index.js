@@ -117,10 +117,8 @@ app.post("/login", async (req, res) => {
       const match = await bcrypt.compare(req.body.password, user.password);
 
       if (!match) {
-        res.json({
-          status: "fail",
-          message: "Invalid username or password",
-        });
+        res.json({status: 400, message: "Invalid username or password"});
+        res.redirect('/login');
       }
       
       // Update session user to queried user
@@ -141,6 +139,10 @@ app.post("/login", async (req, res) => {
       req.session.save();
       res.redirect("/catalog");
     })
+    .catch(function(err) {
+      res.json({status: 400, message: "Invalid"});
+      res.redirect('/login');
+    });
 });
 
 // Logout
@@ -159,6 +161,28 @@ app.get('/profile', (req, res) => {
     .then(function(data) {
       res.render('pages/profile', {user: curr_user, items: data});
     })
+});
+
+app.get('/profile_changes', (req, res) => {
+  res.render('pages/profile_changes', {user: curr_user})
+});
+
+// Edit account info on profile page
+app.post('/profile_changes', async (req, res) => {
+  const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4 returning * ;';
+  await db.any(query, [req.body.major, req.body.gender, req.body.size, curr_user.user_ID])
+  .then(function(user) {
+    // Update session user to queried user
+    curr_user.gender = user.gender;
+    curr_user.major = user.major;
+    curr_user.size_preference = user.size_preference;
+    
+    res.redirect('/profile_changes')
+  })
+  .catch(function(err) {
+   res.json({status: 400, message: "Invalid"});
+   //res.render('pages/profile_changes', {user: curr_user})
+  });
 });
 
 // Catalog

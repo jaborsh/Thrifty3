@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(128) NOT NULL, -- Updated password length to account for hashed passes
   first_name VARCHAR(45),
   last_name VARCHAR(45),
-  gender CHAR(1),
+  gender VARCHAR(45),
   major VARCHAR(45),
   size_preference VARCHAR(5),
   card_no CHAR(16) NOT NULL,
