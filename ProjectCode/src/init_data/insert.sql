@@ -12,7 +12,6 @@ VALUES
 ('Pants', 8.00),
 ('Hats', 4.50),
 ('Hoodies', 10.00),
-('Hats', 4.50),
 ('Jackets', 10.00),
 ('Shorts', 7.00),
 ('Backpacks', 10.50);
