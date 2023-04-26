@@ -17,26 +17,6 @@
         <a class="nav-link" href = "../profile_changes" style="color: blue"><u>Click Here</u></a>
       </p>
     </div>
-
-    <div class="container" style="padding-top: 5%;">
-      <% if (items.length === 0) { %>
-        <p>No listings.</p>
-      <% } else { %>
-        <div id="items" class="row">
-          <h2 class="col-12">Current Listings</h2>
-          <% items.forEach(function(item) { %>
-            <div class="col-md-4 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h3 class="card-title"><%= item.name %></h3>
-                  <img src="<%= item.url %>">
-                </div>
-              </div>
-            </div>
-          <% }); %>
-        </div>
-      <% } %>
-    </div>
 </main>
 
 <%- include ('../partials/footer') %>
