@@ -117,31 +117,31 @@ app.post("/login", async (req, res) => {
       const match = await bcrypt.compare(req.body.password, user.password);
 
       if (!match) {
-        res.json({status: 400, message: "Invalid username or password"});
-        res.redirect('/login');
+        res.render('pages/login', {message: 'Incorrect username or password', error: true, user: curr_user});
+      } else{
+        // Update session user to queried user
+
+        curr_user.user_ID = user.user_id;
+        curr_user.username = user.username;
+        curr_user.email = user.email;
+        curr_user.first_name = user.first_name;
+        curr_user.last_name = user.last_name;
+        curr_user.gender = user.gender;
+        curr_user.major = user.major;
+        curr_user.size_preference = user.size_preference;
+        curr_user.card_no = user.card_no;
+        curr_user.member_since = user.member_since;
+        curr_user.is_paid = user.is_paid;
+        curr_user.preference_ID = user.preference_id;
+
+        req.session.user = curr_user;
+        req.session.save();
+        res.redirect("/catalog");
       }
       
-      // Update session user to queried user
-      curr_user.user_ID = user.user_id;
-      curr_user.username = user.username;
-      curr_user.email = user.email;
-      curr_user.first_name = user.first_name;
-      curr_user.last_name = user.last_name;
-      curr_user.gender = user.gender;
-      curr_user.major = user.major;
-      curr_user.size_preference = user.size_preference;
-      curr_user.card_no = user.card_no;
-      curr_user.member_since = user.member_since;
-      curr_user.is_paid = user.is_paid;
-      curr_user.preference_ID = user.preference_id;
-
-      req.session.user = curr_user;
-      req.session.save();
-      res.redirect("/catalog");
     })
     .catch(function(err) {
-      res.json({status: 400, message: "Invalid"});
-      res.redirect('/login');
+      res.render('pages/login', {message: 'Incorrect username or password', error: true, user: curr_user});
     });
 });
 
