@@ -5,7 +5,7 @@
 <main>
     <div class="container"> <!-- User's listings container -->
         <div class="card-header">
-            <b>My Listings</b>
+            <h1 style="text-align: center;">My Listings</h1>
         </div>
         <div class="card-group">
             <%
@@ -21,7 +21,8 @@
                                 <h5 class="card-title">${l.name}</h5> \
                                 ${listing_price} \
                                 <p class="card-text">${l.description}</p> \
-                                <p class="card-text"><small class="text-muted">Listed ${l.date_listed}</small></p> \
+                                <p class="card-text"><small class="text-muted">Listed ${l.date_listed.toLocaleDateString('en-US')}</small></p> \
+                                <a href="/listings/${l.item_id}">View Listing</a>
                             </div> \
                         </div>`;
             %>
@@ -32,7 +33,7 @@
     <!-- Donate Form-->
     <div class="container" style="padding-top: 5%;">
         <div class="card-header">
-            <b>Donate</b>
+            <h1 style="text-align: center;">Donate</h1>
         </div>
         <form action="/donate" method="POST">
         <div class="mb-3">
