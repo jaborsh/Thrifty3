@@ -67,9 +67,9 @@ CREATE TABLE IF NOT EXISTS item_images (
 );
 
 -- -----------------------------------------------------
--- Table pickup_locations
+-- Table pickup_location
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS pickup_locations (
+CREATE TABLE IF NOT EXISTS pickup_location (
   location_ID SERIAL,
   building_name VARCHAR(45) NOT NULL,
   num_listings INT,
@@ -89,5 +89,5 @@ CREATE TABLE IF NOT EXISTS listings (
   description VARCHAR(255),
   PRIMARY KEY (listing_ID),
   FOREIGN KEY (item_ID) REFERENCES items (item_ID) ON DELETE CASCADE,
-  FOREIGN KEY (location_ID) REFERENCES pickup_locations (location_id) ON DELETE CASCADE
+  FOREIGN KEY (location_ID) REFERENCES pickup_location (location_id) ON DELETE CASCADE
 );
