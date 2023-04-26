@@ -168,14 +168,19 @@ app.get('/profile_changes', (req, res) => {
 
 // Edit account info on profile page
 app.post('/profile_changes', async (req, res) => {
-  const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4';
+  const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4 returning * ;';
   await db.any(query, [req.body.major, req.body.gender, req.body.size, curr_user.user_ID])
-  .then(function(data) {
-    res.render('pages/profile_changes', {user: curr_user})
+  .then(function(user) {
+    // Update session user to queried user
+    curr_user.gender = user.gender;
+    curr_user.major = user.major;
+    curr_user.size_preference = user.size_preference;
+    
+    res.redirect('/profile_changes')
   })
   .catch(function(err) {
-   // res.json({status: 400, message: "Invalid"});
-   res.render('pages/profile_changes', {user: curr_user})
+   res.json({status: 400, message: "Invalid"});
+   //res.render('pages/profile_changes', {user: curr_user})
   });
 });
 
