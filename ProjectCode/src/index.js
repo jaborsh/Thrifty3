@@ -171,6 +171,21 @@ app.get('/catalog', (req, res) => {
     })
 });
 
+app.get('/locations', (req, res) => {
+  
+  const query = `
+    SELECT * FROM pickup_location;
+  `;
+  db.any(query)
+    .then(data => {
+      res.render('pages/location', {pickup_location: data });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('Error occurred while retrieving locations from DB');
+    });
+});
+
 app.get('/search', (req, res) => {
   const query = `SELECT items.item_ID, items.name, item_category.name AS category, item_category.base_price
   FROM items
@@ -280,6 +295,9 @@ app.post('/donate', async (req, res) => {
   });
 
 });
+
+
+
 // starting the server and keeping the connection open to listen for more requests
 module.exports = app.listen(3000, () => {
     console.log('listening on port 3000');
