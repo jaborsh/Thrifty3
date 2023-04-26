@@ -1,0 +1,56 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+
+<main class="container">
+  <h1 style="text-align:center;">Thrifty3 Catalog</h1>
+
+  <div class="row mb-4">
+    <div class="form-group">
+      <form class="d-flex" action="/search" method="GET">
+        <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Filter option to only display items that associate with selected filter. None by default -->
+  <div class="row mb-4">
+    <div class="form-group">
+      <form class="d-flex" action="/filter" method="GET">
+        <select class="form-control me-2" name="category" aria-label="Filter">
+          <option value="all">All</option>
+          <option value="Shirts">Shirts</option>
+          <option value="Pants">Pants</option>
+          <option value="Hats">Hats</option>
+          <option value="Hoodies">Hoodies</option>
+          <option value="Jackets">Jackets</option>
+          <option value="Shorts">Shorts</option>
+          <option value="Backpacks">Backpacks</option>
+        </select>
+        <button class="btn btn-outline-success" type="submit">Filter</button>
+      </form>
+    </div>
+
+  
+  <% if (items.length === 0) { %>
+    <p>No items found.</p>
+  <% } else { %>
+    <div id="items" class="row">
+      <h2 class="col-12">Items for Sale</h2>
+      <% items.forEach(function(item) { %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title"><%= item.name %></h3>
+              <p class="card-text"><strong>Category:</strong> <%= item.category %></p>
+              <p class="card-text"><strong>Price:</strong> $<%= item.base_price %></p>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+
+</main>
+
+<%- include ('../partials/footer') %>

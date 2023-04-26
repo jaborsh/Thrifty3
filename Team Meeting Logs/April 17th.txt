@@ -1,0 +1,8 @@
+Completed from last week: Working demo of login and register pages
+- login
+- register
+- database
+
+Priorities for this week:
+- catalog page (make this our home page)
+- listing page 

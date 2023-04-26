@@ -1,0 +1,21 @@
+Presentations are next week.
+
+Changes from last week:
+- catalog page (separately functioning search bar and filter function)
+- donate page (displays listings for current user)
+- profile page
+- location page
+- mens&womens page (carasoul of pictures of clothing)
+
+Changes to still make/push to main:
+- add images to catalog page
+- have search bar and filter function work together on catalog page
+- finish functionality of profile and location page
+- upload images for user donations (use https://cloudinary.com/documentation/image_upload_api_reference)
+
+By recitation:
+- push everything to main and make sure everything is running
+
+By next Wednesday:
+- slides, active demo, video demo
+- come to meeting next week with working project and finished presentation
