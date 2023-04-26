@@ -97,8 +97,7 @@ app.post('/register', async (req, res) => {
       res.redirect('/login');
   })
   .catch(function(err) {
-    res.json({status: 400, message: "Invalid"});
-    res.redirect('/register');
+    res.render('pages/register', {message: 'Invalid information', error: true, user: curr_user});
   });
 });
 
@@ -153,14 +152,7 @@ app.get('/logout', (req, res) => {
 
 // Profile
 app.get('/profile', (req, res) => {
-  const query = `SELECT items.name AS name, item_images.url AS url
-  FROM items
-  INNER JOIN item_images ON items.item_ID = item_images.item_ID
-  WHERE items.user_ID = $1;`;
-  db.any(query, [curr_user.user_ID])
-    .then(function(data) {
-      res.render('pages/profile', {user: curr_user, items: data});
-    })
+  res.render('pages/profile', {user: curr_user});
 });
 
 app.get('/profile_changes', (req, res) => {
@@ -169,19 +161,18 @@ app.get('/profile_changes', (req, res) => {
 
 // Edit account info on profile page
 app.post('/profile_changes', async (req, res) => {
-  const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4 returning * ;';
+  const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4 returning major, gender, size_preference;';
   await db.any(query, [req.body.major, req.body.gender, req.body.size, curr_user.user_ID])
   .then(function(user) {
     // Update session user to queried user
-    curr_user.gender = user.gender;
-    curr_user.major = user.major;
-    curr_user.size_preference = user.size_preference;
-    
-    res.redirect('/profile_changes')
+    curr_user.gender = req.body.gender;
+    curr_user.major = req.body.major
+    curr_user.size_preference = req.body.size;
+
+    res.redirect('/profile')
   })
   .catch(function(err) {
-   res.json({status: 400, message: "Invalid"});
-   //res.render('pages/profile_changes', {user: curr_user})
+   res.render('pages/profile_changes', {message: 'Invalid information', error: true, user: curr_user});
   });
 });
 
