@@ -4,17 +4,22 @@
 <main class="container">
     <h1 style="text-align:center;"><%=user.first_name %> <%=user.last_name %></h1>
 
-    <p>Username: <%=user.username %></p>
-    <p>Email: <%=user.email %></p>
-    <p>Major: <%=user.major %></p>
-    <p>Gender: <%=user.gender %></p>
-    <p>Preferred Size: <%=user.size_preference %></p>
+    <div class="container">
+      <p><b>Username: </b><%=user.username %></p>
+      <p><b>Email: </b><%=user.email %></p>
+      <p><b>Major: </b><%=user.major %></p>
+      <p><b>Gender: </b><%=user.gender %></p>
+      <p><b>Preferred Size: </b><%=user.size_preference %></p>
+    </div>
 
-    <p>To edit account information:
-      <a class="nav-link" href = "../popup" style="color: blue"><u>Click Here</u></a>
-    </p>
+    <div class="container" style="padding-top: 5%;">
+      <p style="font-size: 2;"><b>To edit account information:</b>
+        <a class="nav-link" href = "../profile_changes" style="color: blue"><u>Click Here</u></a>
+      </p>
+    </div>
 
-    <% if (items.length === 0) { %>
+    <div class="container" style="padding-top: 5%;">
+      <% if (items.length === 0) { %>
         <p>No listings.</p>
       <% } else { %>
         <div id="items" class="row">
@@ -31,7 +36,7 @@
           <% }); %>
         </div>
       <% } %>
-
+    </div>
 </main>
 
 <%- include ('../partials/footer') %>

@@ -162,20 +162,20 @@ app.get('/profile', (req, res) => {
     })
 });
 
-app.get('/popup', (req, res) => {
-  res.render('pages/popup', {user: curr_user})
+app.get('/profile_changes', (req, res) => {
+  res.render('pages/profile_changes', {user: curr_user})
 });
 
 // Edit account info on profile page
-app.post('/popup', async (req, res) => {
+app.post('/profile_changes', async (req, res) => {
   const query = 'UPDATE users SET major = $1, gender = $2, size_preference = $3 WHERE user_ID = $4';
-  db.any(query, [req.body.major, req.body.gender, curr_user.user_ID])
+  await db.any(query, [req.body.major, req.body.gender, req.body.size, curr_user.user_ID])
   .then(function(data) {
-      res.redirect('/profile');
+    res.render('pages/profile_changes', {user: curr_user})
   })
   .catch(function(err) {
-    res.json({status: 400, message: "Invalid"});
-    res.redirect('/profile');
+   // res.json({status: 400, message: "Invalid"});
+   res.render('pages/profile_changes', {user: curr_user})
   });
 });
 
