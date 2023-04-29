@@ -33,8 +33,8 @@
             <h1 style="color:rgb(85, 85, 85)"> $<%= listing.price %></h1>
                 <% if(listing.is_sale == 'Y') {%> 
                     <p style="color:red">
-                        <% discount = 1 - 100*(listing.price / cat.base_price)%>
-                        - <%- discount %> (Sale!)
+                        <% discount = 100*(1 - (listing.price / cat.base_price))%>
+                        - <%- discount.toFixed(2) %>% (Sale!)
                     </p>
                 <%}%>
             <p style="color:rgb(54, 54, 54)">
@@ -47,7 +47,7 @@
                 <b>Color: <%= listing.color.toUpperCase() %></b> <br>
                 <b>Location:</b> 
                     <!-- <a href="/loc/<%//-listing.location_id%>"><%=// loc.name %> </a> -->
-                    <a style="opacity: 1;" href="<%-listing.location_id%>"><%= listing.building_name %> </a>
+                    <a style="opacity: 1;" href="/locations/<%-listing.location_id%>"><%= listing.building_name %> </a>
                 <br>
                 Date listed: <%- listing.date_listed.toLocaleDateString('en-US')%>
             </p>
