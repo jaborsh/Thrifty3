@@ -6,8 +6,16 @@ const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require('bcrypt'); //  To hash passwords
+// const cloudinary = require('cloudinary').v2; //Image uploading
+// npm install cloudinary somewhere in package
 require('dotenv').config();
 
+// Cloudinary Configuration 
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET
+// });
 // *****************************************************
 // <!-- Connect to DB -->
 // *****************************************************
@@ -203,7 +211,7 @@ app.get('/locations', (req, res) => {
   `;
   db.any(query)
     .then(data => {
-      res.render('pages/location', {pickup_location: data });
+      res.render('pages/location', {user: curr_user, pickup_location: data });
     })
     .catch(error => {
       console.error(error);
@@ -275,11 +283,13 @@ app.get('/donate', (req, res) => {
 //Donate post (WIP)
 app.post('/donate', async (req, res) => {
   const category_ID_query = 'SELECT * FROM item_category WHERE name = $1';
+  const img_files = req.body.files; // Images for upload
   var listed_item; // Listed item information
   var cat_ID; // Category information
   var cat_price;
   
-  await db.any(category_ID_query, [req.body.category]) //translate dropdown category name to category_ID for insertion
+  //translate dropdown category name to category_ID for insertion
+  await db.any(category_ID_query, [req.body.category])
     .then(cat => {
       console.log(cat);
       cat_ID = cat[0].category_id; // get category id, base_price from query
@@ -318,6 +328,21 @@ app.post('/donate', async (req, res) => {
     //res.json({status: 400, message: "Invalid listing. Make sure all required fields are valid."});
     res.redirect('/donate');
   });
+  
+  // // Images query, cloudinary upload
+  // i_url = cloudinary.uploader.upload
+  // const image_query = 'insert into item_images (url,item_ID) values ($1, $2) returning *;';
+  // await db.any(image_query, [i_url, listed_item])
+  // .then(function(data) {
+  //     //res.json({status: 200, message: "Image Added"});
+  //     console.log(data);
+  //     res.redirect('/donate');
+  // })
+  // .catch(function(err) {
+  //   console.log(err);
+  //   //res.json({status: 400, message: "Invalid listing. Make sure all required fields are valid."});
+  //   res.redirect('/donate');
+  // });
 
 });
 
