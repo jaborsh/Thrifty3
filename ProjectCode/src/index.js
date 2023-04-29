@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require('bcrypt'); //  To hash passwords
 // const cloudinary = require('cloudinary').v2; //Image uploading
-// npm install cloudinary somewhere in package
+// "cloudinary": "^1.31.0", in package.JSON
 require('dotenv').config();
 
 // Cloudinary Configuration 
@@ -155,7 +155,23 @@ app.post("/login", async (req, res) => {
 // Logout
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  res.render('pages/login', {user: null});
+  // Destroy curr_user global
+  curr_user.user_ID = undefined;
+      curr_user.username = undefined;
+      curr_user.email = undefined;
+      curr_user.first_name = undefined;
+      curr_user.last_name = undefined;
+      curr_user.gender = undefined;
+      curr_user.major = undefined;
+      curr_user.size_preference = undefined;
+      curr_user.card_no = undefined;
+      curr_user.member_since = undefined;
+      curr_user.is_paid = undefined;
+      curr_user.preference_ID = undefined;
+      curr_user.cart = [];
+  res.render('pages/login', {
+    user: null, err: false, message: 'Successfully logged out.'
+  });
 });
 
 // Profile
@@ -282,7 +298,7 @@ app.post('/donate', async (req, res) => {
   //translate dropdown category name to category_ID for insertion
   await db.any(category_ID_query, [req.body.category])
     .then(cat => {
-      console.log(cat);
+      //console.log(cat);
       cat_ID = cat[0].category_id; // get category id, base_price from query
       cat_price = cat[0].base_price;
     })
@@ -292,12 +308,12 @@ app.post('/donate', async (req, res) => {
     });
   
   //Insert item into items table
-  console.log("=====cat_id", cat_ID);
+  //console.log("=====cat_id", cat_ID);
   const query_items = 'insert into items (name, user_ID, category_ID, color, size) values ($1, $2, $3, $4, $5) returning *;';
   await db.any(query_items, [req.body.title, curr_user.user_ID, cat_ID, req.body.color, req.body.size])
   .then(function(data) {
       //res.json({status: 200, message: "Item Added"});
-      console.log(data);
+      console.log('===item data//', data);
       listed_item = data[0].item_id;
   })
   .catch(function(err) {
@@ -311,7 +327,7 @@ app.post('/donate', async (req, res) => {
   await db.any(query_listings, [listed_item, cat_price, 1, req.body.desc])
   .then(function(data) {
       //res.json({status: 200, message: "Item Added"});
-      console.log(data);
+      console.log('===listing data//', data);
       res.redirect('/donate');
   })
   .catch(function(err) {
@@ -385,8 +401,43 @@ app.post('/listings/:id', async (req, res) => {
   db.one(query, [req.params.id])
     .then((i) => {
       curr_user.cart.push(i);
-      console.log(curr_user);
       res.redirect(`/listings/${i.item_id}`);
+    });
+});
+
+app.get('/cart', (req, res) => {
+  var query_delim = ''; //list of item IDs in session cart (as string; delim = ',')
+  var curr_user_cart = [];
+  for(let i = 0; i < curr_user.cart.length; i++) {
+    curr_user_cart.push(curr_user.cart[i].item_id);
+    query_delim = ','
+  };
+  const user_cart_query = 
+    `SELECT * \
+    FROM listings \
+    LEFT JOIN items \
+    ON listings.item_ID = items.item_ID \
+    WHERE \
+    listings.item_ID IN (\
+      -1\
+      ${query_delim}\
+      ${curr_user_cart.map(i=>Number(i))}\
+      );`;
+  console.log('===query//', user_cart_query);
+  db.any(user_cart_query)
+    .then((user_cart) => {
+      res.render('pages/cart', {
+        user: req.session.user,
+        user_cart, // JSON for all current user's listings from query
+      });
+    })
+    .catch((err) => {
+      res.render("pages/cart", {
+        user: curr_user,
+        user_cart: [],
+        error: true,
+        message: err.message,
+      });
     });
 });
 // starting the server and keeping the connection open to listen for more requests

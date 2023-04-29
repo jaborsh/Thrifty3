@@ -3,6 +3,7 @@
 <%- include ('../partials/message') %>
 
 <main>
+    <% if (user && user.user_ID) {%>
     <div class="container"> <!-- User's listings container -->
         <div class="card-header">
             <h1 style="text-align: center;">My Listings</h1>
@@ -17,7 +18,9 @@
                 else listing_price = `<h4 class="card-title">$${l.price}</h4>`;
                 
                 temp = `<div class="card"> \
-                            <img class="card-img-top" src="..." alt="Card image cap"> \
+                            <img class="card-img-top" style="height: 25em; object-fit: contain;" \ 
+                            src="https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/6849354/2022/2/9/cc41bfc1-55f8-47df-a705-d5a05b286a871644388786288-Roadster-Men-Blue--Beige-Regular-Fit-Checked-Casual-Shirt-88-1.jpg"\ 
+                            alt="Card image cap"> \
                             <div class="card-body"> \
                                 <h5 class="card-title">${l.name}</h5> \
                                 ${listing_price} \
@@ -98,5 +101,12 @@
         </div>
         </form>
     </div>
+    <% }
+    else{ %>
+        <p style="text-align: center; padding-top: 5%;">
+            You are not logged in! Please <a href="/login">login</a> 
+            to donate and view any listings you pledge!
+        </p>
+    <%}%>
 </main>
 <%- include ('../partials/footer') %>
