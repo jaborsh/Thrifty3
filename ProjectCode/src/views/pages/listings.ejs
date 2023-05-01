@@ -1,0 +1,61 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+<%- include ('../partials/message') %>
+
+<main class="container">
+    <div class="row mb-4">
+        <div class="col"> <!-- Image col -->
+            <div id="imageCarousel" class="carousel slide">
+                <div class="carousel-inner">
+                <% var i = 0;%>
+                    <%images.forEach(function(img) { console.log(img.url);%>
+                    <% if(i == 0){%> 
+                        <div class="carousel-item active"> 
+                    <%} else{%> 
+                        <div class="carousel-item"> <%}%>
+                            <img src='<%-img.url%>' class="d-block w-100" style="height: 25em; object-fit: contain;">
+                        </div>
+                <%i++ });%>
+                </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            </div> <!-- End carousel -->
+        </div> <!-- End Col -->
+        
+        <div class="col"> <!-- Listing detail cols -->
+            <h1 style="color:rgb(85, 85, 85)""><%= listing.name.toUpperCase() %></h1>
+            <h1 style="color:rgb(85, 85, 85)"> $<%= listing.price %></h1>
+                <% if(listing.is_sale == 'Y') {%> 
+                    <p style="color:red">
+                        <% discount = 100*(1 - (listing.price / cat.base_price))%>
+                        - <%- discount.toFixed(2) %>% (Sale!)
+                    </p>
+                <%}%>
+            <p style="color:rgb(54, 54, 54)">
+                <br>
+                <%= listing.description %> <br>
+            </p>
+            <p style="color:rgb(54, 54, 54); opacity: 0.75;">
+                <b>Category: <%= cat.name.toUpperCase() %></b> <br>
+                <b>Size: <%= listing.size.toUpperCase() %></b> <br>
+                <b>Color: <%= listing.color.toUpperCase() %></b> <br>
+                <b>Location:</b> 
+                    <!-- <a href="/loc/<%//-listing.location_id%>"><%=// loc.name %> </a> -->
+                    <a style="opacity: 1;" href="/locations/<%-listing.location_id%>"><%= listing.building_name %> </a>
+                <br>
+                Date listed: <%- listing.date_listed.toLocaleDateString('en-US')%>
+            </p>
+            <form action="/listings/<%-listing.listing_id%>" method="POST">
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
+        </div>
+    </div> <!-- End Row -->
+</main>
+
+<%- include ('../partials/footer') %>

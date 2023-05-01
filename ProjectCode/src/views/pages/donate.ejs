@@ -3,25 +3,30 @@
 <%- include ('../partials/message') %>
 
 <main>
+    <% if (user && user.user_ID) {%>
     <div class="container"> <!-- User's listings container -->
         <div class="card-header">
-            <b>My Listings</b>
+            <h1 style="text-align: center;">My Listings</h1>
         </div>
         <div class="card-group">
             <%
             var temp;
             var listing_price;
             user_listings.forEach(function(l) {
+                console.log(l.price);
                 if(l.is_sale == 'Y') listing_price = `<h4 class="card-title" style="color:red">$${l.price} (Sale!)</h4>`;
                 else listing_price = `<h4 class="card-title">$${l.price}</h4>`;
                 
                 temp = `<div class="card"> \
-                            <img class="card-img-top" src="..." alt="Card image cap"> \
+                            <img class="card-img-top" style="height: 25em; object-fit: contain;" \ 
+                            src="https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/6849354/2022/2/9/cc41bfc1-55f8-47df-a705-d5a05b286a871644388786288-Roadster-Men-Blue--Beige-Regular-Fit-Checked-Casual-Shirt-88-1.jpg"\ 
+                            alt="Card image cap"> \
                             <div class="card-body"> \
                                 <h5 class="card-title">${l.name}</h5> \
                                 ${listing_price} \
                                 <p class="card-text">${l.description}</p> \
-                                <p class="card-text"><small class="text-muted">Listed ${l.date_listed}</small></p> \
+                                <p class="card-text"><small class="text-muted">Listed ${l.date_listed.toLocaleDateString('en-US')}</small></p> \
+                                <a href="/listings/${l.item_id}">View Listing</a>
                             </div> \
                         </div>`;
             %>
@@ -32,7 +37,7 @@
     <!-- Donate Form-->
     <div class="container" style="padding-top: 5%;">
         <div class="card-header">
-            <b>Donate</b>
+            <h1 style="text-align: center;">Donate</h1>
         </div>
         <form action="/donate" method="POST">
         <div class="mb-3">
@@ -85,11 +90,23 @@
                     <input type="text" class="form-control" id="desc" name="desc" />
                 </div>
             </div>
-            
+            <div class="form-group row">
+                <label for="formFileMultiple" class="form-label">Upload Images</label>
+                <div class="col-sm-10"> 
+                    <input class="form-control" type="file" id="formFileMultiple" multiple name="files">
+                </div>        
+            </div>
             <button type="submit" class="btn btn-primary">Pledge</button>
             
         </div>
         </form>
     </div>
+    <% }
+    else{ %>
+        <p style="text-align: center; padding-top: 5%;">
+            You are not logged in! Please <a href="/login">login</a> 
+            to donate and view any listings you pledge!
+        </p>
+    <%}%>
 </main>
 <%- include ('../partials/footer') %>

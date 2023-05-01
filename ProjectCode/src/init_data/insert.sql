@@ -12,7 +12,6 @@ VALUES
 ('Pants', 8.00),
 ('Hats', 4.50),
 ('Hoodies', 10.00),
-('Hats', 4.50),
 ('Jackets', 10.00),
 ('Shorts', 7.00),
 ('Backpacks', 10.50);
@@ -34,3 +33,12 @@ INSERT INTO items (name, user_ID, category_ID, color, size) VALUES
 ('test jacket', 1, 6, 'green', 'L'),
 ('test shorts', 1, 7, 'yellow', 'S'),
 ('test backpack', 1, 8, 'orange', 'M');
+
+INSERT INTO listings(item_ID,price,is_sale,location_ID,description) VALUES
+(1,5,'Y',2,'This test shirt bussin'),
+(2,7.50,'Y',2,'This test pants bussin'),
+(3,4.50,'N',4,'This test hat bussin'),
+(4,10.00,'N',3,'This test hoodie bussin'),
+(5,5.00,'Y',5,'This test jacket bussin'),
+(6,7.00,'N',1,'This test shorts bussin'),
+(7,10.50,'N',1,'This test backpack bussin');
