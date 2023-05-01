@@ -99,6 +99,10 @@ app.get('/men', (req, res) => {
   res.render('pages/men', {user: curr_user})
 });
 
+app.get('/women', (req, res) => {
+  res.render('pages/women', {user: curr_user})
+});
+
 app.use(express.static('resourses/img'))
 
 // Register
