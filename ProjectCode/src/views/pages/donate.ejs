@@ -12,7 +12,7 @@
             var temp;
             var listing_price;
             user_listings.forEach(function(l) {
-                if(l.is_sale = 'Y') listing_price = `<h4 class="card-title" style="color:red">$${l.price} (Sale!)</h4>`;
+                if(l.is_sale == 'Y') listing_price = `<h4 class="card-title" style="color:red">$${l.price} (Sale!)</h4>`;
                 else listing_price = `<h4 class="card-title">$${l.price}</h4>`;
                 
                 temp = `<div class="card"> \
