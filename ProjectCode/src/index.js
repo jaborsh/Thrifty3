@@ -203,7 +203,7 @@ app.get('/locations', (req, res) => {
   `;
   db.any(query)
     .then(data => {
-      res.render('pages/location', {pickup_location: data });
+      res.render('pages/location', {use: curr_user, pickup_location: data });
     })
     .catch(error => {
       console.error(error);
