@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="236" height="100" viewBox="0 0 236 100">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #fff;
+        stroke-linejoin: round;
+        stroke-opacity: 0.5;
+        stroke-width: 1px;
+        font-size: 83.333px;
+        fill: #2b2529;
+        text-anchor: middle;
+        font-family: "French Script MT";
+      }
+    </style>
+  </defs>
+  <text id="Thrifty_3" data-name="Thrifty 3" class="cls-1" transform="translate(116.547 65.331) scale(0.987)"><tspan x="0">Thrifty 3</tspan></text>
+</svg>
