@@ -1,0 +1,21 @@
+Changes from last week:
+- added images
+- completed men's and women's pages
+- added locations page
+
+Went through a demo!
+Demo Feedback:
+- Talk about register
+- Show that no page can be used without logging in
+- Think about the actual flow
+- Record a demo for safety
+
+Presentation Slides:
+- intro team members
+- mention tool and mention how you used it and give it a score
+- for challenges: mention we faced this challenge, and how you overcame it
+
+To Be Completed:
+- add images to catalog page (change database/add url per item)
+- flush out any errors (listing pages)
+- finish presentation and reports
