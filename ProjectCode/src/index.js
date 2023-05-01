@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt'); //  To hash passwords
 // "cloudinary": "^1.31.0", in package.JSON
 require('dotenv').config();
 
+
 // Cloudinary Configuration 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -48,6 +49,7 @@ db.connect()
 
 app.set('view engine', 'ejs'); // set the view engine to EJS
 app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+app.use(express.static('resources'))
   
 // initialize session variables
 app.use(
@@ -92,6 +94,12 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
   res.render('pages/register', {user: curr_user})
 });
+
+app.get('/men', (req, res) => {
+  res.render('pages/men', {user: curr_user})
+});
+
+app.use(express.static('resourses/img'))
 
 // Register
 app.post('/register', async (req, res) => {
