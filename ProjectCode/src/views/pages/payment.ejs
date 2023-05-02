@@ -57,7 +57,7 @@
             </p>
             <form action="/payment/confirm" method="POST">
                 <div class="form-group row">
-                    <input type="text" class="form-control" value="<%= list_of_ids %>" name="cart_ids" id="id_box">
+                    <input type="text" class="form-control invisible" value="<%= list_of_ids %>" name="cart_ids" id="id_box" aria="hidden">
                 </div>
                 <button type="submit" class="btn btn-primary">Confirm Purchase</button>
             </form>
