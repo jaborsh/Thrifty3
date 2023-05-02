@@ -1,0 +1,28 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+<%- include ('../partials/message') %>
+
+<main class="container">
+    <div class="row mb-4">
+        <div class="col"> <!-- Image col -->
+            <div id="location_image" class="">
+                <!-- get location id, i = location_id-1 array of images-->
+                <% const i = (pickup_location[0].location_id)-1; console.log('i==',i)%>
+                <img src="<%= lArr[i].url %>" class="d-block w-100" style="height: 25em; object-fit: contain;">
+            </div> 
+        </div> <!-- End Col -->
+        
+        <div class="col"> <!-- Listing detail cols -->
+            <h1 style="color:rgb(85, 85, 85)"><%= pickup_location[0].building_name.toUpperCase() %></h1>
+            <p style="color:rgb(54, 54, 54)">
+                <br>
+                <%= lArr[i].desc %> <br>
+            </p>
+            <p style="color:rgb(54, 54, 54); opacity: 0.75;">
+                <b>Number of listings: <%= pickup_location[0].num_listings %></b> <br>
+            </p>
+        </div>
+    </div> <!-- End Row -->
+</main>
+
+<%- include ('../partials/footer') %>

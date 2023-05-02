@@ -1,0 +1,69 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
+<%- include ('../partials/message') %>
+
+<main class="container">
+    <h1 style="text-align: center;">Confirm Purchase</h1>
+    <div class="row mb-4">
+        <!-- Item(s) div -->
+        <div clas="col">
+            <div class="card-group">
+                <%
+                let list_of_ids = [];
+                var total_price = 0.0;
+                var temp;
+                var listing_price;
+                if(temp_cart){
+                    temp_cart.forEach(function(l) {
+                        if(l.is_sale == 'Y') listing_price = `<h4 class="card-title" style="color:red">$${l.price} (Sale!)</h4>`;
+                        else listing_price = `<h4 class="card-title">$${l.price}</h4>`;
+                        list_of_ids.push(l.item_id);
+                        console.log('list = ',list_of_ids);
+                        total_price += Number(l.price);
+                        const item_images = imgs[(l.category_id)-1]; // get item image urls array
+                        const r_i = Math.floor(Math.random() * item_images.length); // grab random image
+
+                        temp = `<div class="card" style="width: 18rem;"> \
+                                    <img class="card-img-top" style="height: 25em; object-fit: contain;" \
+                                    src="${item_images[r_i]}" \
+                                    alt="Card image cap"> \
+                                    <div class="card-body"> \
+                                        <h5 class="card-title">${l.name}</h5> \
+                                        ${listing_price} \
+                                        <p class="card-text">${l.description}</p> \
+                                        <p class="card-text"><small class="text-muted">Listed ${l.date_listed.toLocaleDateString('en-US')}</small></p> \
+                                        <a href="/listings/${l.item_id}">View Listing</a> \
+                                    </div> \
+                                </div>`;
+                        %>
+                        <%- temp %>
+                    <% }); %>
+                <% } %>
+            </div>
+            <h1 style="text-align: center;">TOTAL: $<%= total_price %></h1>
+        </div>
+        
+        <!-- Form container -->
+        <div class="col">
+            <p>
+                <b>Name for Order:</b> <%= user.first_name%>
+                <br>
+                <b>Email:</b> <%= user.email%>
+                <br>
+                <b>Payment Method:</b> Card ending in <%= user.card_no.substring(12)%>
+                <br>
+                <b>Pickup location:</b> <%= //location %>
+                <br>
+            </p>
+            <form action="/payment/confirm" method="POST">
+                <div class="form-group row">
+                    <input type="text" class="form-control" value="<%= list_of_ids %>" name="cart_ids" id="id_box">
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm Purchase</button>
+            </form>
+            
+            <a href="/cart" style="color: red">Cancel</a>
+        </div>
+    </div>
+</main>
+<%- include ('../partials/footer') %>

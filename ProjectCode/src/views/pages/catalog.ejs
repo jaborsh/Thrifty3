@@ -1,5 +1,6 @@
 <%- include ('../partials/head') %>
 <%- include ('../partials/header') %>
+<%- include ('../partials/message') %>
 
 <main class="container">
   <h1 style="text-align:center;">Thrifty3 Catalog</h1>
@@ -40,12 +41,20 @@
       <% items.forEach(function(item) { %>
         <div class="col-md-4 mb-4">
           <div class="card h-100">
-            <div class="card-body">
-              <h3 class="card-title"><%= item.name %></h3>
+            <!-- Item image -->
+            <!-- filter: brightness(50%)?-->
+            <% 
+              const item_images = imgs[(item.category_id)-1]; // get item image urls array
+              const r_i = Math.floor(Math.random() * item_images.length); // grab random image
+            %>
+            <img class="card-img" src="<%= item_images[r_i]%>" alt="Card image" style="opacity: 75%;">
+            <div class="card-img-overlay">
+              <h3 class="card-title"><%= item.name.toUpperCase() %></h3>
               <p class="card-text"><strong>Category:</strong> <%= item.category %></p>
               <p class="card-text"><strong>Price:</strong> $<%= item.base_price %></p>
+              <a href="/listings/<%= item.item_id %>">View Listing</a> <!-- Link to listing -->
             </div>
-          </div>
+          </div> <!-- End Card-->
         </div>
       <% }); %>
     </div>

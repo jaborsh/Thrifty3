@@ -8,12 +8,12 @@
             <div id="imageCarousel" class="carousel slide">
                 <div class="carousel-inner">
                 <% var i = 0;%>
-                    <%images.forEach(function(img) { console.log(img.url);%>
+                    <%images.forEach(function(img) {%>
                     <% if(i == 0){%> 
                         <div class="carousel-item active"> 
                     <%} else{%> 
                         <div class="carousel-item"> <%}%>
-                            <img src='<%-img.url%>' class="d-block w-100" style="height: 25em; object-fit: contain;">
+                            <img src='<%-img %>' class="d-block w-100" style="height: 25em; object-fit: contain;">
                         </div>
                 <%i++ });%>
                 </div>
@@ -33,7 +33,7 @@
             <h1 style="color:rgb(85, 85, 85)"> $<%= listing.price %></h1>
                 <% if(listing.is_sale == 'Y') {%> 
                     <p style="color:red">
-                        <% discount = 100*(1 - (listing.price / cat.base_price))%>
+                        <% discount = 100*(1 - (Number(listing.price) / Number(cat.base_price)))%>
                         - <%- discount.toFixed(2) %>% (Sale!)
                     </p>
                 <%}%>

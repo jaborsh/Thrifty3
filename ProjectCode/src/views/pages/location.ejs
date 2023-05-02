@@ -1,5 +1,6 @@
 <%- include ('../partials/head') %>
 <%- include ('../partials/header') %>
+<%- include ('../partials/message') %>
 
 <main class="container">
     <h1 style="text-align:center;">Pickup Sites</h1>
@@ -15,8 +16,9 @@
             <div class="card h-100">
             <div class="card-body">
                 <h3 class="card-title"><%= location.building_name %></h3>
-                <p class="card-text"><strong>Area:</strong>Main Campus</p>
+                <p class="card-text"><strong>Area: </strong>Main Campus</p>
                 <p class="card-text"><strong>Current Listings:</strong> <%= location.num_listings %></p>
+                <a href="/locations/<%= location.location_id %>">View Location</a> <!-- Link to location -->
             </div>
             </div>
         </div>

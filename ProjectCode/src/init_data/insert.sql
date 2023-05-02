@@ -8,13 +8,13 @@ VALUES
 
 INSERT INTO item_category (name, base_price)
 VALUES
-('Shirts', 6.50),
-('Pants', 8.00),
-('Hats', 4.50),
-('Hoodies', 10.00),
-('Jackets', 10.00),
-('Shorts', 7.00),
-('Backpacks', 10.50);
+('Shirts', 6.50), --1
+('Pants', 8.00), -- 2
+('Hats', 4.50), -- 3
+('Hoodies', 10.00), --4
+('Jackets', 10.00), --5
+('Shorts', 7.00), --6
+('Backpacks', 10.50); --7
 
 INSERT INTO users 
   (username,
@@ -30,9 +30,9 @@ INSERT INTO items (name, user_ID, category_ID, color, size) VALUES
 ('test pants', 1, 2, 'blue', 'L'),
 ('test hat', 1, 3, 'black', 'S'),
 ('test hoodie', 1, 4, 'white', 'M'),
-('test jacket', 1, 6, 'green', 'L'),
-('test shorts', 1, 7, 'yellow', 'S'),
-('test backpack', 1, 8, 'orange', 'M');
+('test jacket', 1, 5, 'green', 'L'),
+('test shorts', 1, 6, 'yellow', 'S'),
+('test backpack', 1, 7, 'orange', 'M');
 
 INSERT INTO listings(item_ID,price,is_sale,location_ID,description) VALUES
 (1,5,'Y',2,'This test shirt bussin'),

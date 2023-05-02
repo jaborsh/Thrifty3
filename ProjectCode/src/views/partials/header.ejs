@@ -13,30 +13,9 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbar-collapse">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/men">Men's </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/women">Women's </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/catalog">Catalog</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/donate">Donate</a>
-            </li>
-          </ul>
-          
           <!-- Logo -->
           <ul class="navbar-nav me-auto">
-            <a class="navbar-brand" href="/home">
+            <a class="navbar-brand" href="/catalog">
               <svg xmlns="http://www.w3.org/2000/svg" width="236" height="75" viewBox="0 0 236 100">
                 <defs>
                   <style>
@@ -55,6 +34,26 @@
                 <text id="Thrifty_3" data-name="Thrifty 3" class="cls-1" transform="translate(116.547 65.331) scale(0.987)"><tspan x="0">Thrifty 3</tspan></text>
               </svg>
             </a>
+          </ul>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="catalog_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  Catalog
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="catalog_dropdown">
+                  <a class="dropdown-item" href="/catalog">Full Catalog</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/men">Men</a>
+                  <a class="dropdown-item" href="/women">Women</a>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/donate">Donate</a>
+            </li>
           </ul>
           <!-- Locations -->
           <ul class="navbar-nav me-auto">
@@ -84,8 +83,10 @@
 
                 <% if (user && user.user_ID) { %>
                   <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item" href="/profile">Profile</a>
-                    <a class="dropdown-item" href="/donate">Listings</a>
+                    <p class="dropdown-item disabled"> Hi, <%= user.first_name %>!</p>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/profile">View Profile</a>
+                    <a class="dropdown-item" href="/donate">View My Listings</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/logout">Logout</a>
                   </ul>
